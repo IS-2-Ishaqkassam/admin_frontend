@@ -4,6 +4,7 @@ import React from "react"
 
 function Chart() {
 	return (
+		
 		<Container>
 			<div></div>
 		</Container>
