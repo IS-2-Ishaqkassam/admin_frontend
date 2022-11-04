@@ -32,7 +32,7 @@ export default Sidebar
 
 const Container = styled.div`
 	background-color: #1c4e80;
-	width: 277px;
+	width: 13%;
 	height: 100vh;
 	margin: 0;
 	padding: 0;
@@ -63,7 +63,7 @@ const Nav = styled.div`
 		border-top: 1px solid white;
 		/* border-left: 1px solid white;
 		border-right: 1px solid white; */
-		font-size: 32px;
+		font-size: 28px;
 		color: white;
 
       :hover{
@@ -76,10 +76,11 @@ const Nav = styled.div`
       margin: auto;
       margin-top: 117px;
 		height: 62px;
-		width: 167px;
+		/* width: 167px; */
+		width: 60%;
 		border-radius: 10px;
 		background-color: #801C25;
-		font-size: 32px;
+		font-size: 2em;
 		display: flex;
 		justify-content: center;
 		align-items: center;
