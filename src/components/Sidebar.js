@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { Link } from "react-router-dom"
 
 import React from "react"
 
@@ -12,12 +13,16 @@ function Sidebar() {
 
 			<Nav>
 				<ul>
-					<li>
-						<p>Forecast</p>
-					</li>
-					<li>
-						<p>Resident Details</p>
-					</li>
+					<Link to="/">
+						<li>
+							<p>Forecast</p>
+						</li>
+					</Link>
+					<Link to="/residents">
+						<li>
+							<p>Resident Details</p>
+						</li>
+					</Link>
 				</ul>
 
 				<div>
@@ -66,29 +71,29 @@ const Nav = styled.div`
 		font-size: 28px;
 		color: white;
 
-      :hover{
-         cursor: pointer;
-         background-color: grey;
-      }
+		:hover {
+			cursor: pointer;
+			background-color: grey;
+		}
 	}
 
 	div {
-      margin: auto;
-      margin-top: 117px;
+		margin: auto;
+		margin-top: 117px;
 		height: 62px;
 		/* width: 167px; */
 		width: 60%;
 		border-radius: 10px;
-		background-color: #801C25;
+		background-color: #801c25;
 		font-size: 2em;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-      color: white;
+		color: white;
 
-      :hover{
-         background-color: darkred;
-         cursor: pointer;
-      }
+		:hover {
+			background-color: darkred;
+			cursor: pointer;
+		}
 	}
 `

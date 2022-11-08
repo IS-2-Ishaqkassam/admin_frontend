@@ -19,7 +19,7 @@ function Chart() {
 	// const data = []
 
 	useEffect(() => {
-		Axios.get("http://localhost:4000/fakeTimeSeriesData")
+		Axios.get("http://localhost:4000/timeseries/fakeData")
 			.then((response) => {
 				setData(response.data)
 				// data.push(response.data)
