@@ -16,19 +16,57 @@ import React from "react"
 
 function Chart() {
 	const [data, setData] = useState([])
+	// const [jobId, setJobId] = useState([])
+	const jobId = {}
+	const [timeseries, setTimeseries] = useState()
 	// const data = []
 
 	useEffect(() => {
 		Axios.get("http://localhost:4000/timeseries/fakeData")
 			.then((response) => {
 				setData(response.data)
-				// data.push(response.data)
 			})
-			.catch((e) => {
-				console.log("error", e)
+			.then(() => {
+				Axios.post(
+					"https://api.unplu.gg/forecast",
+					{
+						data,
+						forecast_to: 1668121755450,
+						callback: "https://eop35ebikjh8te5.m.pipedream.net",
+					},
+					{
+						headers: {
+							"x-access-token":
+								"913012815fe00070139cc0ec86a970158f4c1a8d1679a9ea1a67edbcdfa68015",
+							"Content-Type": "application/json",
+						},
+					}
+				)
+					.then((res) => {
+						console.log("after prediction response", res)
+						jobId["data"] = {
+							id: res.data.job_id,
+							date: res.headers.date,
+						}
+						// setJobId({
+						// })
+					})
+					.then(() => {
+						Axios.post("http://localhost:4000/jobs/", jobId).then((res) => {
+							console.log("posting jobid", res.data)
+						})
+					})
+					.catch((err) => {
+						console.log("error posting the job id and date", err)
+					})
+			})
+			.catch((err) => {
+				console.log("error getting fake data", err)
 			})
 	}, [])
-	console.log("data here 3", data)
+
+	console.log("jobId", jobId)
+	console.log("data here 3", data ? data.timeseries : data)
 	const numberOfCars = data.totalCars
 	const numberOfDays = data.timeseries ? data.timeseries.length : 0
 	return (

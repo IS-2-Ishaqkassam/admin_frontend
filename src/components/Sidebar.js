@@ -8,7 +8,7 @@ function Sidebar() {
 	return (
 		<Container>
 			<Logo>
-				<image src="" alt="logo" />
+				<img src="" alt="logo" />
 			</Logo>
 
 			<Nav>
