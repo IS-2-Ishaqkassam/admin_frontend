@@ -6,30 +6,55 @@ import TextField from "@mui/material/TextField"
 
 function Residents() {
 	const [vehicleCount, setVehicleCount] = useState(1)
+	const [allVehicles, setAllVehicles] = useState([
+		{
+			name: "",
+			house_number: "",
+			email: "",
+			number_plate: "",
+			color: "",
+			make: "",
+			model: "",
+		},
+	])
 	const vehicleDetails = []
-
-	const vehiclemake = useRef("")
-	const vehicleNumberplate = useRef("")
-	const vehicleColor = useRef("")
-	const vehicleModel = useRef(null)
 
 	const addVehicle = (e) => {
 		e.preventDefault()
+		const values = [...allVehicles]
+		values.push({
+			number_plate: "",
+			color: "",
+			make: "",
+			model: "",
+		})
+		setAllVehicles(values)
+		console.log(values)
 		setVehicleCount(vehicleCount + 1)
 		console.log(vehicleCount)
 	}
 
-	const removeVehicle = (e) => {
-		e.preventDefault()
+	const removeVehicle = (index) => {
 		setVehicleCount(vehicleCount - 1)
+		const values = [...allVehicles]
+		values.splice(index, 1)
+		setAllVehicles(values)
 		console.log(vehicleCount)
 	}
 
+	const handleInputChange = (index, event) => {
+		const values = [...allVehicles]
+		const updatedValue = event.target.name
+		values[index][updatedValue] = event.target.value
+
+		setAllVehicles(values)
+	}
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log(vehicleColor.current.value)
+		console.log(allVehicles)
 	}
 
+	console.log(allVehicles)
 	return (
 		<Container>
 			<Header>
@@ -37,9 +62,9 @@ function Residents() {
 			</Header>
 
 			<ResidentForm>
-				<form>
+				<form onSubmit={handleSubmit}>
 					<Form>
-						{/* <ResidentInputs>
+						<ResidentInputs>
 							<div className="details_header">
 								<p>Resident Details</p>
 							</div>
@@ -47,21 +72,24 @@ function Residents() {
 								className="input"
 								id="outlined-basic"
 								label="Name"
+								name="name"
 								variant="outlined"
 							/>
 							<TextField
 								className="input"
 								id="outlined-basic"
 								label="Email"
+								name="email"
 								variant="outlined"
 							/>
 							<TextField
 								className="input"
 								id="outlined-basic"
+								name="house_number"
 								label="House Number"
 								variant="outlined"
 							/>
-						</ResidentInputs> */}
+						</ResidentInputs>
 
 						<VehicleInputs>
 							<div className="details_header">
@@ -70,7 +98,7 @@ function Residents() {
 									<button className="button" id="add" onClick={addVehicle}>
 										Add Vehicle
 									</button>
-									{vehicleCount > 1 && (
+									{/* {vehicleCount > 1 && (
 										<button
 											className="button"
 											id="remove"
@@ -78,10 +106,11 @@ function Residents() {
 										>
 											remove
 										</button>
-									)}
+									)} */}
 								</div>
 							</div>
-							{Array.from(Array(vehicleCount)).map((vehicle, index) => {
+							{/* {Array.from(Array(vehicleCount)).map((vehicle, index) => { */}
+							{allVehicles.map((input, index) => {
 								return (
 									<div className="vehicles" key={index}>
 										{index + 1}
@@ -91,29 +120,55 @@ function Residents() {
 												id="outlined-basic"
 												label="Number Plate"
 												variant="outlined"
-												ref={vehicleNumberplate}
+												value={input.number_plate}
+												name="number_plate"
+												onChange={(e) => {
+													handleInputChange(index, e)
+												}}
 											/>
 											<TextField
 												className="input"
 												id="outlined-basic"
 												label="Vehicle Make"
+												name="make"
 												variant="outlined"
-												ref={vehiclemake}
+												value={input.make}
+												onChange={(e) => {
+													handleInputChange(index, e)
+												}}
 											/>
 											<TextField
 												className="input"
 												id="outlined-basic"
 												label="Vehicle Model"
 												variant="outlined"
-												ref={vehicleModel}
+												name="model"
+												value={input.model}
+												onChange={(e) => {
+													handleInputChange(index, e)
+												}}
 											/>
 											<TextField
 												className="input"
 												id="outlined-basic"
 												label="Vehicle Color"
+												name="color"
+												value={input.color}
 												variant="outlined"
-												ref={vehicleColor}
+												onChange={(e) => {
+													handleInputChange(index, e)
+												}}
 											/>
+										</div>
+										<div>
+											<button
+												className="cancel"
+												onClick={() => {
+													removeVehicle(index)
+												}}
+											>
+												remove
+											</button>
 										</div>
 									</div>
 								)
@@ -161,7 +216,7 @@ const ResidentForm = styled.div`
 	width: 85%;
 	margin: 2% 0 0 5%;
 	padding: 1% 0 1% 0%;
-	overflow-y: scroll;
+	/* overflow-y: scroll; */
 
 	p {
 		font-size: 30px;

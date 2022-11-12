@@ -1,14 +1,14 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
+// import {logo} from './img/logo'
 
 import React from "react"
 
 function Sidebar() {
-	// 1C4E80
 	return (
 		<Container>
 			<Logo>
-				<img src="" alt="logo" />
+				<img src="./img/logo.jpg" alt="logo" />
 			</Logo>
 
 			<Nav>
@@ -43,16 +43,20 @@ const Container = styled.div`
 	padding: 0;
 `
 const Logo = styled.div`
-	background-color: green;
+	background-color: #1c4e80;
 	height: 30vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
 	img {
 		background-color: white;
 		border-radius: 50%;
+		height: 70%;
+		width: 80%;
 	}
 `
 const Nav = styled.div`
-	/* border: 1px solid black; */
 	height: 70vh;
 
 	ul {
@@ -66,8 +70,6 @@ const Nav = styled.div`
 		justify-content: center;
 		height: 67px;
 		border-top: 1px solid white;
-		/* border-left: 1px solid white;
-		border-right: 1px solid white; */
 		font-size: 28px;
 		color: white;
 
@@ -81,7 +83,6 @@ const Nav = styled.div`
 		margin: auto;
 		margin-top: 117px;
 		height: 62px;
-		/* width: 167px; */
 		width: 60%;
 		border-radius: 10px;
 		background-color: #801c25;
