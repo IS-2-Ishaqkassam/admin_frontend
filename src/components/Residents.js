@@ -23,7 +23,6 @@ function Residents() {
 	])
 
 	const allDetails = {
-		residentDetails: {},
 		vehicles: [],
 	}
 
@@ -61,7 +60,9 @@ function Residents() {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		allDetails["vehicles"] = allVehicles
-		allDetails["residentDetails"] = residentDetails[0]
+		allDetails["name"] = residentDetails[0].name
+		allDetails["email"] = residentDetails[0].email
+		allDetails["house_number"] = residentDetails[0].house_number
 		console.log("All Details", allDetails)
 	}
 
