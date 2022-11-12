@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
 
 import TextField from "@mui/material/TextField"
+import CancelIcon from "@mui/icons-material/Cancel"
 
 function Residents() {
 	const [allVehicles, setAllVehicles] = useState([
@@ -36,7 +37,6 @@ function Residents() {
 			model: "",
 		})
 		setAllVehicles(values)
-		console.log(values)
 	}
 
 	const removeVehicle = (index) => {
@@ -60,14 +60,11 @@ function Residents() {
 	}
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log("all vehicles", allVehicles)
-		console.log("resident Details", residentDetails)
 		allDetails["vehicles"] = allVehicles
 		allDetails["residentDetails"] = residentDetails[0]
 		console.log("All Details", allDetails)
 	}
 
-	console.log(allVehicles)
 	return (
 		<Container>
 			<Header>
@@ -81,52 +78,52 @@ function Residents() {
 							<div className="details_header">
 								<p>Resident Details</p>
 							</div>
-							<TextField
-								className="input"
-								id="outlined-basic"
-								label="Name"
-								name="name"
-								onChange={(e) => {
-									handleResidentInputChange(0, e)
-								}}
-								variant="outlined"
-							/>
-							<TextField
-								className="input"
-								id="outlined-basic"
-								label="Email"
-								name="email"
-								onChange={(e) => {
-									handleResidentInputChange(0, e)
-								}}
-								variant="outlined"
-							/>
-							<TextField
-								className="input"
-								id="outlined-basic"
-								name="house_number"
-								label="House Number"
-								onChange={(e) => {
-									handleResidentInputChange(0, e)
-								}}
-								variant="outlined"
-							/>
+							<div className="text-boxes">
+								<TextField
+									className="input"
+									id="outlined-basic"
+									label="Name"
+									name="name"
+									onChange={(e) => {
+										handleResidentInputChange(0, e)
+									}}
+									variant="outlined"
+								/>
+								<TextField
+									className="input"
+									id="outlined-basic"
+									label="Email"
+									name="email"
+									onChange={(e) => {
+										handleResidentInputChange(0, e)
+									}}
+									variant="outlined"
+								/>
+								<TextField
+									className="input"
+									id="outlined-basic"
+									name="house_number"
+									label="House Number"
+									variant="outlined"
+									onChange={(e) => {
+										handleResidentInputChange(0, e)
+									}}
+								/>
+							</div>
 						</ResidentInputs>
 
 						<VehicleInputs>
 							<div className="details_header">
 								<p>Vehicle Details</p>
 								<div>
-									<button className="button" id="add" onClick={addVehicle}>
-										Add Vehicle
-									</button>
+									<button onClick={addVehicle}>Add Vehicle</button>
 								</div>
 							</div>
 							{allVehicles.map((input, index) => {
 								return (
 									<div className="vehicles" key={index}>
 										{index + 1}
-										<div className="text-boxes">
+										<div className="text-boxes" id="vehicle-text-boxes">
 											<TextField
 												className="input"
 												id="outlined-basic"
@@ -172,15 +169,13 @@ function Residents() {
 												}}
 											/>
 										</div>
-										<div>
-											<button
+										<div className="cancel-div">
+											<CancelIcon
 												className="cancel"
 												onClick={() => {
 													removeVehicle(index)
 												}}
-											>
-												remove
-											</button>
+											/>
 										</div>
 									</div>
 								)
@@ -207,8 +202,18 @@ const Container = styled.div`
 `
 const Form = styled.div`
 	display: flex;
-	width: 100%;
-	justify-content: space-between;
+
+	.text-boxes {
+		width: 90%;
+	}
+
+	.input {
+		outline: none;
+		height: 25px;
+		width: 46%;
+		margin: 10px 0 6% 4%;
+		font-size: 20px;
+	}
 `
 const Header = styled.div`
 	height: 10%;
@@ -225,7 +230,7 @@ const Header = styled.div`
 
 const ResidentForm = styled.div`
 	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-	width: 85%;
+	width: 90%;
 	margin: 2% 0 0 5%;
 	padding: 1% 0 1% 0%;
 
@@ -276,46 +281,33 @@ const ResidentForm = styled.div`
 					cursor: pointer;
 				}
 			}
-
-			#add {
-				margin: 0 12% 0 0;
-			}
-
-			#remove {
-				color: #801c25;
-				outline-color: #801c25;
-				border-color: #801c25;
-			}
 		}
 	}
 `
 const ResidentInputs = styled.div`
 	width: 50%;
-	.input {
-		outline: none;
-		height: 25px;
-		width: 43%;
-		margin: 10px 0 6% 4%;
-		font-size: 20px;
-	}
 `
 const VehicleInputs = styled.div`
 	width: 50%;
-	height: 100%;
+
 	.vehicles {
 		display: flex;
-		border-bottom: 1px dotted black;
-	}
+		justify-content: space-between;
+		align-items: center;
 
-	.text-boxes {
-		margin-top: 10px;
-	}
-	.input {
-		outline: none;
-		height: 25px;
-		width: 40%;
-		margin: 0 0 6% 4%;
-		font-size: 20px;
+		#vehicle-text-boxes {
+		}
+
+		.cancel-div {
+			margin-right: 10px;
+			padding: 0;
+			border-radius: 50%;
+
+			:hover {
+				cursor: pointer;
+				color: red;
+			}
+		}
 	}
 `
 const Table = styled.div``
