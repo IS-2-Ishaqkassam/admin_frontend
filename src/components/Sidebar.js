@@ -52,8 +52,8 @@ const Logo = styled.div`
 	img {
 		background-color: white;
 		border-radius: 50%;
-		height: 70%;
-		width: 80%;
+		/* height: 70%; */
+		width: 70%;
 	}
 `
 const Nav = styled.div`

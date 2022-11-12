@@ -5,19 +5,26 @@ import styled from "styled-components"
 import TextField from "@mui/material/TextField"
 
 function Residents() {
-	const [vehicleCount, setVehicleCount] = useState(1)
 	const [allVehicles, setAllVehicles] = useState([
 		{
-			name: "",
-			house_number: "",
-			email: "",
 			number_plate: "",
 			color: "",
 			make: "",
 			model: "",
 		},
 	])
-	const vehicleDetails = []
+	const [residentDetails, setResidentDetails] = useState([
+		{
+			name: "",
+			email: "",
+			house_number: "",
+		},
+	])
+
+	const allDetails = {
+		residentDetails: {},
+		vehicles: [],
+	}
 
 	const addVehicle = (e) => {
 		e.preventDefault()
@@ -30,35 +37,41 @@ function Residents() {
 		})
 		setAllVehicles(values)
 		console.log(values)
-		setVehicleCount(vehicleCount + 1)
-		console.log(vehicleCount)
 	}
 
 	const removeVehicle = (index) => {
-		setVehicleCount(vehicleCount - 1)
 		const values = [...allVehicles]
 		values.splice(index, 1)
 		setAllVehicles(values)
-		console.log(vehicleCount)
 	}
 
 	const handleInputChange = (index, event) => {
 		const values = [...allVehicles]
 		const updatedValue = event.target.name
 		values[index][updatedValue] = event.target.value
-
 		setAllVehicles(values)
+	}
+
+	const handleResidentInputChange = (index, event) => {
+		const values = [...residentDetails]
+		const updatedValue = event.target.name
+		values[index][updatedValue] = event.target.value
+		setResidentDetails(values)
 	}
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log(allVehicles)
+		console.log("all vehicles", allVehicles)
+		console.log("resident Details", residentDetails)
+		allDetails["vehicles"] = allVehicles
+		allDetails["residentDetails"] = residentDetails[0]
+		console.log("All Details", allDetails)
 	}
 
 	console.log(allVehicles)
 	return (
 		<Container>
 			<Header>
-				<p>Welcome, John Doe {vehicleCount}</p>
+				<p>Welcome, John Doe</p>
 			</Header>
 
 			<ResidentForm>
@@ -73,6 +86,9 @@ function Residents() {
 								id="outlined-basic"
 								label="Name"
 								name="name"
+								onChange={(e) => {
+									handleResidentInputChange(0, e)
+								}}
 								variant="outlined"
 							/>
 							<TextField
@@ -80,6 +96,9 @@ function Residents() {
 								id="outlined-basic"
 								label="Email"
 								name="email"
+								onChange={(e) => {
+									handleResidentInputChange(0, e)
+								}}
 								variant="outlined"
 							/>
 							<TextField
@@ -87,6 +106,9 @@ function Residents() {
 								id="outlined-basic"
 								name="house_number"
 								label="House Number"
+								onChange={(e) => {
+									handleResidentInputChange(0, e)
+								}}
 								variant="outlined"
 							/>
 						</ResidentInputs>
@@ -98,18 +120,8 @@ function Residents() {
 									<button className="button" id="add" onClick={addVehicle}>
 										Add Vehicle
 									</button>
-									{/* {vehicleCount > 1 && (
-										<button
-											className="button"
-											id="remove"
-											onClick={removeVehicle}
-										>
-											remove
-										</button>
-									)} */}
 								</div>
 							</div>
-							{/* {Array.from(Array(vehicleCount)).map((vehicle, index) => { */}
 							{allVehicles.map((input, index) => {
 								return (
 									<div className="vehicles" key={index}>
@@ -216,7 +228,6 @@ const ResidentForm = styled.div`
 	width: 85%;
 	margin: 2% 0 0 5%;
 	padding: 1% 0 1% 0%;
-	/* overflow-y: scroll; */
 
 	p {
 		font-size: 30px;
