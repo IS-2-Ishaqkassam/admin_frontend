@@ -3,7 +3,19 @@
 	padding: 0;
 }
 
-a{
+a {
 	text-decoration: none !important;
 	color: white;
+}
+@import "~antd/dist/antd.css";
+
+.editable-row .ant-form-item-explain {
+	position: absolute;
+	top: 100%;
+	font-size: 12px;
+}
+
+p {
+	padding: 0 !important;
+	margin: 0 !important;
 }

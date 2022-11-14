@@ -87,9 +87,10 @@ const Nav = styled.div`
 		border-radius: 10px;
 		background-color: #801c25;
 		font-size: 2em;
+		/* border: 1px solid black; */
 		display: flex;
 		justify-content: center;
-		align-items: center;
+		align-items: center !important;
 		color: white;
 
 		:hover {

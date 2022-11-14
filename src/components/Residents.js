@@ -1,24 +1,28 @@
 import React, { useState, useEffect, useRef } from "react"
 
 import styled from "styled-components"
-
 import TextField from "@mui/material/TextField"
 import CancelIcon from "@mui/icons-material/Cancel"
+import Axios from "axios"
+
+// import TableComponent from "./Table"
 
 function Residents() {
+	//variable and states
+	const [allResidents, setAllResidents] = useState()
 	const [allVehicles, setAllVehicles] = useState([
 		{
-			number_plate: "",
-			color: "",
-			make: "",
-			model: "",
+			vehicle_number_plate: "",
+			vehicle_color: "",
+			vehicle_make: "",
+			vehicle_model: "",
 		},
 	])
 	const [residentDetails, setResidentDetails] = useState([
 		{
-			name: "",
-			email: "",
-			house_number: "",
+			resident_name: "",
+			resident_email: "",
+			resident_house_number: "",
 		},
 	])
 
@@ -26,14 +30,28 @@ function Residents() {
 		vehicles: [],
 	}
 
+	//useEffect
+	useEffect(() => {
+		Axios.get("http://localhost:4000/resident")
+			.then((res) => {
+				console.log("all residents: ", res.data)
+				setAllResidents(res.data)
+			})
+			.catch((error) => {
+				console.log("error getting all residents", error)
+			})
+	}, [])
+
+	console.log("outside", allResidents)
+	//functions
 	const addVehicle = (e) => {
 		e.preventDefault()
 		const values = [...allVehicles]
 		values.push({
-			number_plate: "",
-			color: "",
-			make: "",
-			model: "",
+			vehicle_number_plate: "",
+			vehicle_color: "",
+			vehicle_make: "",
+			vehicle_model: "",
 		})
 		setAllVehicles(values)
 	}
@@ -60,10 +78,20 @@ function Residents() {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		allDetails["vehicles"] = allVehicles
-		allDetails["name"] = residentDetails[0].name
-		allDetails["email"] = residentDetails[0].email
-		allDetails["house_number"] = residentDetails[0].house_number
+		allDetails["resident_name"] = residentDetails[0].resident_name
+		allDetails["resident_email"] = residentDetails[0].resident_email
+		allDetails["resident_house_number"] =
+			residentDetails[0].resident_house_number
 		console.log("All Details", allDetails)
+
+		Axios.post("http://localhost:4000/resident", allDetails)
+			.then((response) => {
+				console.log(response)
+				alert("Operation Successful")
+			})
+			.catch((err) => {
+				console.log("Failed to Submit Resident Details")
+			})
 	}
 
 	return (
@@ -84,7 +112,7 @@ function Residents() {
 									className="input"
 									id="outlined-basic"
 									label="Name"
-									name="name"
+									name="resident_name"
 									onChange={(e) => {
 										handleResidentInputChange(0, e)
 									}}
@@ -94,7 +122,7 @@ function Residents() {
 									className="input"
 									id="outlined-basic"
 									label="Email"
-									name="email"
+									name="resident_email"
 									onChange={(e) => {
 										handleResidentInputChange(0, e)
 									}}
@@ -103,7 +131,7 @@ function Residents() {
 								<TextField
 									className="input"
 									id="outlined-basic"
-									name="house_number"
+									name="resident_house_number"
 									label="House Number"
 									variant="outlined"
 									onChange={(e) => {
@@ -130,8 +158,8 @@ function Residents() {
 												id="outlined-basic"
 												label="Number Plate"
 												variant="outlined"
-												value={input.number_plate}
-												name="number_plate"
+												value={input.vehicle_number_plate}
+												name="vehicle_number_plate"
 												onChange={(e) => {
 													handleInputChange(index, e)
 												}}
@@ -140,9 +168,9 @@ function Residents() {
 												className="input"
 												id="outlined-basic"
 												label="Vehicle Make"
-												name="make"
+												name="vehicle_make"
 												variant="outlined"
-												value={input.make}
+												value={input.vehicle_make}
 												onChange={(e) => {
 													handleInputChange(index, e)
 												}}
@@ -152,8 +180,8 @@ function Residents() {
 												id="outlined-basic"
 												label="Vehicle Model"
 												variant="outlined"
-												name="model"
-												value={input.model}
+												name="vehicle_model"
+												value={input.vehicle_model}
 												onChange={(e) => {
 													handleInputChange(index, e)
 												}}
@@ -162,8 +190,8 @@ function Residents() {
 												className="input"
 												id="outlined-basic"
 												label="Vehicle Color"
-												name="color"
-												value={input.color}
+												name="vehicle_color"
+												value={input.vehicle_color}
 												variant="outlined"
 												onChange={(e) => {
 													handleInputChange(index, e)
@@ -191,7 +219,56 @@ function Residents() {
 				</form>
 			</ResidentForm>
 
-			<Table></Table>
+			<TableComponent className="table-container">
+				<div className="table-headers">
+					<p className="name">Name</p>
+					<p className="email">Email</p>
+					<p className="house-number">House Number</p>
+					<p className="operations">Operations</p>
+				</div>
+				{allResidents ? (
+					allResidents.map((resident, index) => (
+						<div
+							key={index}
+							className="table-rows"
+							onClick={() => {
+								console.log("row clicked: ", allResidents[index])
+							}}
+						>
+							<div
+								className="name"
+								onClick={() => {
+									// console.log(index + resident.resident_name)
+								}}
+							>
+								{resident.resident_name}
+							</div>
+							<div
+								className="email"
+								onClick={() => {
+									// console.log(allResidents[index])
+								}}
+							>
+								{resident.resident_email}
+							</div>
+							<div
+								className="house-number"
+								onClick={() => {
+									// console.log(index + resident.resident_house_number)
+								}}
+							>
+								{resident.resident_house_number}
+							</div>
+							<div className="operations">
+								<p id="edit">Edit</p>
+								<p id="delete">Delete</p>
+							</div>
+						</div>
+					))
+				) : (
+					<p></p>
+				)}
+			</TableComponent>
 		</Container>
 	)
 }
@@ -311,4 +388,53 @@ const VehicleInputs = styled.div`
 		}
 	}
 `
-const Table = styled.div``
+const TableComponent = styled.div`
+	.table-container {
+		display: flex;
+	}
+
+	.table-headers {
+		font-weight: bold;
+	}
+
+	.table-headers,
+	.table-rows {
+		display: flex;
+		border: 1px solid black;
+		width: 40%;
+
+		.name {
+			width: 30%;
+		}
+		.email {
+			width: 34%;
+		}
+		.house-number {
+			width: 20%;
+		}
+		.operations {
+			display: flex;
+			width: 17%;
+			justify-content: space-around;
+			align-items: center !important;
+
+			p {
+				margin: 0 !important;
+				text-align: center;
+			}
+		}
+
+		#edit {
+			:hover {
+				background-color: lightgrey;
+				cursor: pointer;
+			}
+		}
+		#delete {
+			:hover {
+				background-color: pink;
+				cursor: pointer;
+			}
+		}
+	}
+`
