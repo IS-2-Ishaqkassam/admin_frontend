@@ -6,7 +6,7 @@ import CancelIcon from "@mui/icons-material/Cancel"
 import Axios from "axios"
 
 import Pagination from "./Pagination"
-import TableComponent from "./Table"
+import TableComponent from "./ResidentTable"
 
 function Residents() {
 	//variable and states
@@ -313,7 +313,7 @@ const ResidentForm = styled.div`
 			align-items: center;
 			justify-content: space-between;
 			p {
-				margin: 1% 0 1% 4%;
+				margin: 1% 0 1% 4% !important;
 				padding: 5px 0 3px 5px;
 			}
 

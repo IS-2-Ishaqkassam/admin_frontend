@@ -53,5 +53,7 @@ const Parent = styled.div`
 	nav {
 		/* border: 1px solid black; */
 		width: 40%;
+
+		margin: 0 0 0.5% 5%;
 	}
 `
