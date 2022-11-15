@@ -5,7 +5,8 @@ import TextField from "@mui/material/TextField"
 import CancelIcon from "@mui/icons-material/Cancel"
 import Axios from "axios"
 
-// import TableComponent from "./Table"
+import Pagination from "./Pagination"
+import TableComponent from "./Table"
 
 function Residents() {
 	//variable and states
@@ -30,6 +31,8 @@ function Residents() {
 		vehicles: [],
 	}
 
+	//pagination
+
 	//useEffect
 	useEffect(() => {
 		Axios.get("http://localhost:4000/resident")
@@ -43,6 +46,18 @@ function Residents() {
 	}, [])
 
 	console.log("outside", allResidents)
+
+	const [currentPage, setCurrentPage] = useState(1)
+	const [recordsPerPage] = useState(5)
+
+	const indexOfLastRecord = currentPage * recordsPerPage
+	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
+
+	// Records to be displayed on the current page
+	const currentRecords =
+		allResidents && allResidents.slice(indexOfFirstRecord, indexOfLastRecord)
+
+	const nPages = allResidents && Math.ceil(allResidents.length / recordsPerPage)
 	//functions
 	const addVehicle = (e) => {
 		e.preventDefault()
@@ -219,56 +234,13 @@ function Residents() {
 				</form>
 			</ResidentForm>
 
-			<TableComponent className="table-container">
-				<div className="table-headers">
-					<p className="name">Name</p>
-					<p className="email">Email</p>
-					<p className="house-number">House Number</p>
-					<p className="operations">Operations</p>
-				</div>
-				{allResidents ? (
-					allResidents.map((resident, index) => (
-						<div
-							key={index}
-							className="table-rows"
-							onClick={() => {
-								console.log("row clicked: ", allResidents[index])
-							}}
-						>
-							<div
-								className="name"
-								onClick={() => {
-									// console.log(index + resident.resident_name)
-								}}
-							>
-								{resident.resident_name}
-							</div>
-							<div
-								className="email"
-								onClick={() => {
-									// console.log(allResidents[index])
-								}}
-							>
-								{resident.resident_email}
-							</div>
-							<div
-								className="house-number"
-								onClick={() => {
-									// console.log(index + resident.resident_house_number)
-								}}
-							>
-								{resident.resident_house_number}
-							</div>
-							<div className="operations">
-								<p id="edit">Edit</p>
-								<p id="delete">Delete</p>
-							</div>
-						</div>
-					))
-				) : (
-					<p></p>
-				)}
-			</TableComponent>
+			<TableComponent currentRecords={currentRecords} />
+
+			<Pagination
+				nPages={nPages}
+				currentPage={currentPage}
+				setCurrentPage={setCurrentPage}
+			/>
 		</Container>
 	)
 }
@@ -384,56 +356,6 @@ const VehicleInputs = styled.div`
 			:hover {
 				cursor: pointer;
 				color: red;
-			}
-		}
-	}
-`
-const TableComponent = styled.div`
-	.table-container {
-		display: flex;
-	}
-
-	.table-headers {
-		font-weight: bold;
-	}
-
-	.table-headers,
-	.table-rows {
-		display: flex;
-		border: 1px solid black;
-		width: 40%;
-
-		.name {
-			width: 30%;
-		}
-		.email {
-			width: 34%;
-		}
-		.house-number {
-			width: 20%;
-		}
-		.operations {
-			display: flex;
-			width: 17%;
-			justify-content: space-around;
-			align-items: center !important;
-
-			p {
-				margin: 0 !important;
-				text-align: center;
-			}
-		}
-
-		#edit {
-			:hover {
-				background-color: lightgrey;
-				cursor: pointer;
-			}
-		}
-		#delete {
-			:hover {
-				background-color: pink;
-				cursor: pointer;
 			}
 		}
 	}
