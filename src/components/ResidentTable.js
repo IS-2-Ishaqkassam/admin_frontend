@@ -1,5 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import styled from "styled-components"
+import Axios from "axios"
 
 import TextField from "@mui/material/TextField"
 import SearchIcon from "@mui/icons-material/Search"
@@ -11,12 +12,38 @@ function TableComponent({ allResidents }) {
 	const [edit, setEdit] = useState(false)
 	const [searchText, setSearchText] = useState("")
 	const [currentRow, setCurrentRow] = useState()
+
+	const resident_name_ref = useRef()
+	const resident_email_ref = useRef()
+	const resident_house_number_ref = useRef()
+
 	const editHandler = (e, row) => {
 		e.preventDefault()
 		setCurrentRow(row)
 		setEdit(true)
 
 		console.log("editing cell: ", row)
+	}
+
+	const saveEditHandler = (e) => {
+		e.preventDefault()
+		const resident_name = resident_name_ref.current.value
+		const resident_email = resident_email_ref.current.value
+		const resident_house_number = resident_house_number_ref.current.value
+		console.log("row refs", resident_name)
+		console.log("current row saving", currentRow)
+		Axios.put(`http://localhost:4000/resident/${currentRow._id}`, {
+			resident_name,
+			resident_email,
+			resident_house_number,
+		})
+			.then((res) => {
+				console.log("saved edit success: ", res)
+				setEdit(false)
+			})
+			.catch((err) => {
+				console.log("error saving resident edit", err)
+			})
 	}
 
 	const searchHandler = (e) => {}
@@ -88,18 +115,26 @@ function TableComponent({ allResidents }) {
 					) : (
 						<div className="row-container">
 							<div className="table-rows">
-								<input className="name" value={currentRow.resident_name} />
-								<input className="email" value={currentRow.resident_email} />
+								<input
+									className="name"
+									ref={resident_name_ref}
+									defaultValue={currentRow.resident_name}
+								/>
+								<input
+									className="email"
+									ref={resident_email_ref}
+									defaultValue={currentRow.resident_email}
+								/>
 								<input
 									className="house-number"
-									value={currentRow.resident_house_number}
+									ref={resident_house_number_ref}
+									defaultValue={currentRow.resident_house_number}
 								/>
 								<div className="operations">
 									<p
 										id="save"
-										onClick={() => {
-											setEdit(false)
-											console.log("save")
+										onClick={(e) => {
+											saveEditHandler(e)
 										}}
 									>
 										Save
@@ -144,7 +179,6 @@ const Table = styled.div`
 	}
 
 	.table-container {
-		/* margin: 0px 0 0.5% 5%; */
 		height: 270px;
 		border: 1px solid lightgrey !important;
 		box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -177,12 +211,6 @@ const Table = styled.div`
 		border-top: 1px solid grey;
 		border-bottom: 1px solid grey;
 		height: 45px;
-
-		input {
-			:focus {
-				/* outline: none; */
-			}
-		}
 	}
 
 	.table-rows {
@@ -221,7 +249,6 @@ const Table = styled.div`
 		}
 
 		#edit {
-			/* background-color: lightgreen; */
 			:hover {
 				background-color: lightgrey;
 				cursor: pointer;
