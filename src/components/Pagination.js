@@ -51,6 +51,6 @@ export default Pagination
 
 const Parent = styled.div`
 	nav {
-		margin: 0 0 0.5% 5%;
+		margin: 1% 0 0.5% 5%;
 	}
 `

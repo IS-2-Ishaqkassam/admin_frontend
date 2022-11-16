@@ -133,7 +133,7 @@ export default TableComponent
 const Table = styled.div`
 	width: 45%;
 	.search {
-		margin: 4% 0 0% 5%;
+		margin: 4% 0 0% 0%;
 		display: flex;
 		align-items: center;
 		padding: 5px 0;
@@ -144,7 +144,7 @@ const Table = styled.div`
 	}
 
 	.table-container {
-		margin: 0px 0 0.5% 5%;
+		/* margin: 0px 0 0.5% 5%; */
 		height: 270px;
 		border: 1px solid lightgrey !important;
 		box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;

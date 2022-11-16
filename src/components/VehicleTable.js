@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 
 import TextField from "@mui/material/TextField"
@@ -11,6 +11,7 @@ function VehicleTableComponent({ allResidents }) {
 	const [edit, setEdit] = useState(false)
 	const [searchText, setSearchText] = useState("")
 	const [currentRow, setCurrentRow] = useState()
+
 	const editHandler = (e, row) => {
 		e.preventDefault()
 		setCurrentRow(row)
@@ -18,6 +19,31 @@ function VehicleTableComponent({ allResidents }) {
 
 		console.log("editing cell: ", row)
 	}
+	function flatten(arr) {
+		return arr.reduce(function (flat, toFlatten) {
+			return flat.concat(
+				Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten
+			)
+		}, [])
+	}
+	var allVehicles = []
+
+	// useEffect(() => {
+	if (allResidents) {
+		const vehicleData = []
+		for (var i = 0; i < allResidents.length; i++) {
+			if (allResidents[i].vehicles.length > 0) {
+				// vehicleData.push(vehicles)
+				for (var j = 0; j < allResidents[i].vehicles[j].length; j++) {}
+				vehicleData.push(allResidents[i].vehicles)
+			}
+		}
+		const arrays = flatten(vehicleData)
+		allVehicles = arrays
+		console.log("arrrays: ", arrays)
+		console.log("vehicle table: ", allVehicles)
+	}
+	// }, [allResidents])
 
 	const searchHandler = (e) => {}
 
@@ -29,9 +55,9 @@ function VehicleTableComponent({ allResidents }) {
 
 	// Records to be displayed on the current page
 	const currentRecords =
-		allResidents && allResidents.slice(indexOfFirstRecord, indexOfLastRecord)
+		allVehicles && allVehicles.slice(indexOfFirstRecord, indexOfLastRecord)
 
-	const nPages = allResidents && Math.ceil(allResidents.length / recordsPerPage)
+	const nPages = allVehicles && Math.ceil(allVehicles.length / recordsPerPage)
 
 	return (
 		<Table>
@@ -56,22 +82,24 @@ function VehicleTableComponent({ allResidents }) {
 			</div>
 			<div className="table-container">
 				<div className="table-headers">
-					<p className="name">Name</p>
-					<p className="email">Email</p>
-					<p className="house-number">House Number</p>
+					<p className="number-plate">Number Plate</p>
+					<p className="make">Make</p>
+					<p className="model">Model</p>
+					<p className="color">Color</p>
 					<p className="operations">Operations</p>
 				</div>
 
 				<div className="row-container">
 					{edit == false ? (
 						currentRecords &&
-						currentRecords.map((resident, index) => (
+						currentRecords.map((vehicle, index) => (
 							<div key={index} className="table-rows">
-								<div className="name">{resident.resident_name}</div>
-								<div className="email">{resident.resident_email}</div>
-								<div className="house-number">
-									{resident.resident_house_number}
+								<div className="number-plate">
+									{vehicle.vehicle_number_plate}
 								</div>
+								<div className="make">{vehicle.vehicle_model}</div>
+								<div className="model">{vehicle.vehicle_make}</div>
+								<div className="color">{vehicle.vehicle_color}</div>
 								<div className="operations">
 									<p
 										id="edit"
@@ -88,11 +116,21 @@ function VehicleTableComponent({ allResidents }) {
 					) : (
 						<div className="row-container">
 							<div className="table-rows">
-								<input className="name" value={currentRow.resident_name} />
-								<input className="email" value={currentRow.resident_email} />
 								<input
-									className="house-number"
-									value={currentRow.resident_house_number}
+									className="number-plate"
+									defaultValue={currentRow.vehicle_number_plate}
+								/>
+								<input
+									className="make"
+									defaultValue={currentRow.vehicle_make}
+								/>
+								<input
+									className="model"
+									defaultValue={currentRow.vehicle_model}
+								/>
+								<input
+									className="color"
+									defaultValue={currentRow.vehicle_color}
 								/>
 								<div className="operations">
 									<p
@@ -133,7 +171,7 @@ export default VehicleTableComponent
 const Table = styled.div`
 	width: 45%;
 	.search {
-		margin: 4% 0 0% 5%;
+		margin: 4% 0 0% 0%;
 		display: flex;
 		align-items: center;
 		padding: 5px 0;
@@ -144,7 +182,7 @@ const Table = styled.div`
 	}
 
 	.table-container {
-		margin: 0px 0 0.5% 5%;
+		/* margin: 0px 0 0.5% 5%; */
 		height: 270px;
 		border: 1px solid lightgrey !important;
 		box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -157,9 +195,10 @@ const Table = styled.div`
 			padding: 6px !important;
 		}
 	}
-	.name,
-	.email,
-	.house-number,
+	.number-plate,
+	.make,
+	.model,
+	.color,
 	.operations {
 		padding: 6px;
 	}
@@ -186,20 +225,26 @@ const Table = styled.div`
 	}
 
 	.table-rows {
-		.name {
-			width: 30%;
+		.number-plate {
+			width: 20%;
 			display: flex;
 			align-items: center !important;
 			border-right: 1px solid lightgrey;
 		}
-		.email {
-			width: 34%;
+		.make {
+			width: 24%;
 			border-right: 1px solid lightgrey;
 			display: flex;
 			align-items: center !important;
 		}
-		.house-number {
-			width: 18%;
+		.model {
+			width: 15%;
+			border-right: 1px solid lightgrey;
+			display: flex;
+			align-items: center !important;
+		}
+		.color {
+			width: 20%;
 			border-right: 1px solid lightgrey;
 			display: flex;
 			align-items: center !important;
@@ -243,25 +288,28 @@ const Table = styled.div`
 	}
 
 	.table-headers {
-		.name {
-			width: 30%;
+		.number-plate {
+			width: 20%;
 			display: flex;
-			justify-content: space-around;
 			align-items: center !important;
 			border-right: 1px solid lightgrey;
 		}
-		.email {
-			width: 34%;
+		.make {
+			width: 24%;
 			border-right: 1px solid lightgrey;
 			display: flex;
-			justify-content: space-around;
 			align-items: center !important;
 		}
-		.house-number {
-			width: 18%;
+		.model {
+			width: 15%;
 			border-right: 1px solid lightgrey;
 			display: flex;
-			justify-content: space-around;
+			align-items: center !important;
+		}
+		.color {
+			width: 20%;
+			border-right: 1px solid lightgrey;
+			display: flex;
 			align-items: center !important;
 		}
 		.operations {
@@ -273,16 +321,28 @@ const Table = styled.div`
 			p {
 				margin: 0 !important;
 				text-align: center;
+				padding: 3px !important;
+
+				border: 1px solid lightgray;
+				border-radius: 10px;
 			}
 		}
 
 		#edit {
+			/* background-color: lightgreen; */
 			:hover {
 				background-color: lightgrey;
 				cursor: pointer;
 			}
 		}
-		#delete {
+		#save {
+			:hover {
+				background-color: lightgreen;
+				cursor: pointer;
+			}
+		}
+		#delete,
+		#cancel {
 			:hover {
 				background-color: pink;
 				cursor: pointer;
