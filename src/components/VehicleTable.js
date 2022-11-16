@@ -7,7 +7,7 @@ import InputAdornment from "@mui/material/InputAdornment"
 
 import Pagination from "./Pagination"
 
-function TableComponent({ allResidents }) {
+function VehicleTableComponent({ allResidents }) {
 	const [edit, setEdit] = useState(false)
 	const [searchText, setSearchText] = useState("")
 	const [currentRow, setCurrentRow] = useState()
@@ -128,7 +128,7 @@ function TableComponent({ allResidents }) {
 	)
 }
 
-export default TableComponent
+export default VehicleTableComponent
 
 const Table = styled.div`
 	width: 45%;

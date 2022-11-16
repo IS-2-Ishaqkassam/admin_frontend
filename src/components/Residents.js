@@ -7,6 +7,7 @@ import Axios from "axios"
 
 import Pagination from "./Pagination"
 import TableComponent from "./ResidentTable"
+import VehicleTableComponent from "./VehicleTable"
 
 function Residents() {
 	//variable and states
@@ -47,17 +48,6 @@ function Residents() {
 
 	console.log("outside", allResidents)
 
-	const [currentPage, setCurrentPage] = useState(1)
-	const [recordsPerPage] = useState(5)
-
-	const indexOfLastRecord = currentPage * recordsPerPage
-	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
-
-	// Records to be displayed on the current page
-	const currentRecords =
-		allResidents && allResidents.slice(indexOfFirstRecord, indexOfLastRecord)
-
-	const nPages = allResidents && Math.ceil(allResidents.length / recordsPerPage)
 	//functions
 	const addVehicle = (e) => {
 		e.preventDefault()
@@ -234,13 +224,11 @@ function Residents() {
 				</form>
 			</ResidentForm>
 
-			<TableComponent currentRecords={currentRecords} />
+			<div className="tables">
+				<TableComponent allResidents={allResidents} />
 
-			<Pagination
-				nPages={nPages}
-				currentPage={currentPage}
-				setCurrentPage={setCurrentPage}
-			/>
+				<VehicleTableComponent allResidents={allResidents} />
+			</div>
 		</Container>
 	)
 }
@@ -249,6 +237,12 @@ export default Residents
 
 const Container = styled.div`
 	width: 87%;
+
+	.tables {
+		display: flex;
+		width: 100%;
+		border: 1px solid black;
+	}
 `
 const Form = styled.div`
 	display: flex;
