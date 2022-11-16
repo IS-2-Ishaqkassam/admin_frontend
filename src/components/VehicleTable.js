@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
+import Axios from "axios"
 
 import TextField from "@mui/material/TextField"
 import SearchIcon from "@mui/icons-material/Search"
@@ -12,6 +13,11 @@ function VehicleTableComponent({ allResidents }) {
 	const [searchText, setSearchText] = useState("")
 	const [currentRow, setCurrentRow] = useState()
 
+	const vehicle_numberplate_ref = useRef()
+	const vehicle_model_ref = useRef()
+	const vehicle_make_ref = useRef()
+	const vehicle_color_ref = useRef()
+
 	const editHandler = (e, row) => {
 		e.preventDefault()
 		setCurrentRow(row)
@@ -19,6 +25,29 @@ function VehicleTableComponent({ allResidents }) {
 
 		console.log("editing cell: ", row)
 	}
+
+	const saveEditHandler = (e) => {
+		e.preventDefault()
+		const vehicle_number_plate = vehicle_numberplate_ref.current.value
+		const vehicle_model = vehicle_model_ref.current.value
+		const vehicle_make = vehicle_make_ref.current.value
+		const vehicle_color = vehicle_color_ref.current.value
+		console.log("current row saving", currentRow)
+		Axios.put(`http://localhost:4000/vehicle/${currentRow._id}`, {
+			vehicle_number_plate,
+			vehicle_model,
+			vehicle_make,
+			vehicle_color,
+		})
+			.then((res) => {
+				console.log("saved edit success: ", res)
+				setEdit(false)
+			})
+			.catch((err) => {
+				console.log("error saving resident edit", err)
+			})
+	}
+
 	function flatten(arr) {
 		return arr.reduce(function (flat, toFlatten) {
 			return flat.concat(
@@ -97,8 +126,8 @@ function VehicleTableComponent({ allResidents }) {
 								<div className="number-plate">
 									{vehicle.vehicle_number_plate}
 								</div>
-								<div className="make">{vehicle.vehicle_model}</div>
-								<div className="model">{vehicle.vehicle_make}</div>
+								<div className="make">{vehicle.vehicle_make}</div>
+								<div className="model">{vehicle.vehicle_model}</div>
 								<div className="color">{vehicle.vehicle_color}</div>
 								<div className="operations">
 									<p
@@ -118,26 +147,29 @@ function VehicleTableComponent({ allResidents }) {
 							<div className="table-rows">
 								<input
 									className="number-plate"
+									ref={vehicle_numberplate_ref}
 									defaultValue={currentRow.vehicle_number_plate}
 								/>
 								<input
 									className="make"
+									ref={vehicle_make_ref}
 									defaultValue={currentRow.vehicle_make}
 								/>
 								<input
 									className="model"
+									ref={vehicle_model_ref}
 									defaultValue={currentRow.vehicle_model}
 								/>
 								<input
 									className="color"
+									ref={vehicle_color_ref}
 									defaultValue={currentRow.vehicle_color}
 								/>
 								<div className="operations">
 									<p
 										id="save"
-										onClick={() => {
-											setEdit(false)
-											console.log("save")
+										onClick={(e) => {
+											saveEditHandler(e)
 										}}
 									>
 										Save
