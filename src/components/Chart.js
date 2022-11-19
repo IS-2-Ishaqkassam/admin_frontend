@@ -13,25 +13,32 @@ import {
 } from "chart.js"
 import { Line } from "react-chartjs-2"
 import React from "react"
+import LineChartComponent from "./LineChart"
+import Pagination from "./Pagination"
+import AllObservationsLineChartComponent from "./AllObservationsLineChartComponent"
 
 function Chart() {
 	const [data, setData] = useState([])
-	// const [jobId, setJobId] = useState([])
-	const jobId = {}
-	const [timeseries, setTimeseries] = useState()
-	// const data = []
+	var jobId = {}
+	const [forecastedData, setForecastedData] = useState([])
+	var timeseriesToBeForecasted = []
 
 	useEffect(() => {
 		Axios.get("http://localhost:4000/timeseries/fakeData")
 			.then((response) => {
+				console.log("fake data", response.data)
 				setData(response.data)
 			})
 			.then(() => {
+				timeseriesToBeForecasted = data.timeseries
+				console.log(
+					"data to send to forecast unplugg",
+					timeseriesToBeForecasted
+				)
 				Axios.post(
 					"https://api.unplu.gg/forecast",
 					{
-						data,
-						forecast_to: 1668121755450,
+						data: timeseriesToBeForecasted,
 						callback: "https://eop35ebikjh8te5.m.pipedream.net",
 					},
 					{
@@ -43,21 +50,35 @@ function Chart() {
 					}
 				)
 					.then((res) => {
-						console.log("after prediction response", res)
+						console.log("after prediction response", res.data)
 						jobId["data"] = {
 							id: res.data.job_id,
 							date: res.headers.date,
 						}
-						// setJobId({
-						// })
 					})
 					.then(() => {
-						Axios.post("http://localhost:4000/jobs/", jobId).then((res) => {
-							console.log("posting jobid", res.data)
-						})
+						Axios.post("http://localhost:4000/jobs/", jobId)
+							.then((res) => {
+								console.log("posting jobid", res.data)
+								console.log("jobid", jobId)
+							})
+							.then(() => {
+								Axios.get(
+									`http://localhost:4000/forecast/${jobId.data.id}`
+								).then((res) => {
+									console.log("gettign forecast array: ", res.data)
+									setForecastedData(res.data ? res.data.forecast : [])
+									// if (res.data == null) {
+									// 	window.alert("no forecast")
+									// }
+								})
+							})
+							.catch((err) => {
+								console.log("error posting the job id and date", err)
+							})
 					})
 					.catch((err) => {
-						console.log("error posting the job id and date", err)
+						console.log("error getting unplugg", err)
 					})
 			})
 			.catch((err) => {
@@ -65,20 +86,51 @@ function Chart() {
 			})
 	}, [])
 
-	console.log("jobId", jobId)
-	console.log("data here 3", data ? data.timeseries : data)
+	// console.log("forecastedData", forecastedData)
+	// console.log("data here 3", data ? data.timeseries : data)
 	const numberOfCars = data.totalCars
 	const numberOfDays = data.timeseries ? data.timeseries.length : 0
+
+	const formattedForecast = []
+	for (var i = 0; i < forecastedData.length; i++) {
+		formattedForecast.push({
+			time: forecastedData[i].timestamp,
+			value: Math.round(forecastedData[i].value),
+		})
+	}
+	const [currentPage, setCurrentPage] = useState(1)
+	const [recordsPerPage] = useState(24)
+	// if (formattedForecast) {
+	const indexOfLastRecord = currentPage * recordsPerPage
+	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
+
+	const currentRecords =
+		formattedForecast &&
+		formattedForecast.slice(indexOfFirstRecord, indexOfLastRecord)
+
+	const nPages =
+		formattedForecast && Math.ceil(formattedForecast.length / recordsPerPage)
+
 	return (
 		<Container>
-			<Header>
+			{/* <Header>
 				<p>Welcome, John Doe</p>
-			</Header>
+			</Header> */}
 			<Cards>
 				<div>{Math.floor(numberOfDays / 24)} Days System Running</div>
 				<div>{numberOfCars} Cars Scanned</div>
 				<div></div>
 			</Cards>
+			<AllObservationsLineChartComponent />
+			<LineChartComponent data={currentRecords} />
+			{forecastedData && (
+				<Pagination
+					nPages={nPages}
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
+				/>
+			)}
+
 		</Container>
 	)
 }
@@ -87,6 +139,8 @@ export default Chart
 
 const Container = styled.div`
 	width: 87%;
+	height: 100vh;
+	overflow-y: scroll;
 `
 const Header = styled.div`
 	height: 10%;
