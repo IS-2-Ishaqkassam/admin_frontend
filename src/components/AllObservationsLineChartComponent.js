@@ -31,7 +31,7 @@ const AllObservationsLineChartComponent = () => {
 	const indexOfLastRecord = currentPage * recordsPerPage
 	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
 
-	const week = data ? data.slice(-168, -1) : []
+	const week = data ? data.slice(-169, -1) : []
 	console.log("week", week)
 	const currentRecords =
 		week && week.slice(indexOfFirstRecord, indexOfLastRecord)
@@ -39,47 +39,36 @@ const AllObservationsLineChartComponent = () => {
 	const nPages = week && Math.ceil(week.length / recordsPerPage)
 	return (
 		// <ResponsiveContainer width="100%" height="100%">
-		<Parent>
-			<LineChart
-				width={1600}
-				height={300}
-				data={currentRecords}
-				margin={{
-					top: 5,
-					right: 30,
-					left: 20,
-					bottom: 5,
-				}}
-			>
-				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis dataKey="timestamp" tickCount={17} minTickGap={-70} />
-				<YAxis />
-				<Tooltip />
-				<Legend />
-				<Line
-					type="monotone"
-					dataKey="count"
-					stroke="#8884d8"
-					activeDot={{ r: 8 }}
+			<Parent>
+				<LineChart width={900} height={300} data={currentRecords}>
+					<CartesianGrid strokeDasharray="3 3" />
+					<XAxis dataKey="timestamp" />
+					<YAxis />
+					<Tooltip />
+					<Legend />
+					<Line
+						type="monotone"
+						dataKey="count"
+						stroke="#8884d8"
+						activeDot={{ r: 8 }}
+					/>
+					{/* <Line type="monotone" dataKey="value" stroke="#82ca9d" /> */}
+				</LineChart>
+				<Pagination
+					className="pagination"
+					nPages={nPages}
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
 				/>
-				{/* <Line type="monotone" dataKey="value" stroke="#82ca9d" /> */}
-			</LineChart>
-			<Pagination
-				className="pagination"
-				nPages={nPages}
-				currentPage={currentPage}
-				setCurrentPage={setCurrentPage}
-			/>
-		</Parent>
-
+			</Parent>
 		// </ResponsiveContainer>
 	)
 }
 export default AllObservationsLineChartComponent
 
 const Parent = styled.div`
-	.pagination {
-		/* width: 10%; */
-		overflow-x: hidden;
-	}
+	width: 60%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `
