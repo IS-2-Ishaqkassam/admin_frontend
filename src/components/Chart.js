@@ -1,26 +1,13 @@
 import { useState, useEffect } from "react"
 import Axios from "axios"
 import styled from "styled-components"
-import {
-	Chart as ChartJS,
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	LineElement,
-	Title,
-	Tooltip,
-	Legend,
-} from "chart.js"
-import { Line } from "react-chartjs-2"
 import React from "react"
 import LineChartComponent from "./LineChart"
-import Pagination from "./Pagination"
 import AllObservationsLineChartComponent from "./AllObservationsLineChartComponent"
 
 function Chart() {
 	const [data, setData] = useState([])
 	var jobId = {}
-	const [forecastedData, setForecastedData] = useState([])
 	var timeseriesToBeForecasted = []
 
 	useEffect(() => {
@@ -39,12 +26,13 @@ function Chart() {
 					"https://api.unplu.gg/forecast",
 					{
 						data: timeseriesToBeForecasted,
+						forecast_to: 1663554366,
 						callback: "https://eop35ebikjh8te5.m.pipedream.net",
 					},
 					{
 						headers: {
 							"x-access-token":
-								"913012815fe00070139cc0ec86a970158f4c1a8d1679a9ea1a67edbcdfa68015",
+								"b1c709bf8c77f7c24244b923a006b8ced5a647b2d45f232dec8a04d32bd54624",
 							"Content-Type": "application/json",
 						},
 					}
@@ -62,17 +50,6 @@ function Chart() {
 								console.log("posting jobid", res.data)
 								console.log("jobid", jobId)
 							})
-							.then(() => {
-								Axios.get(
-									`http://localhost:4000/forecast/${jobId.data.id}`
-								).then((res) => {
-									console.log("gettign forecast array: ", res.data)
-									setForecastedData(res.data ? res.data.forecast : [])
-									// if (res.data == null) {
-									// 	window.alert("no forecast")
-									// }
-								})
-							})
 							.catch((err) => {
 								console.log("error posting the job id and date", err)
 							})
@@ -86,30 +63,8 @@ function Chart() {
 			})
 	}, [])
 
-	// console.log("forecastedData", forecastedData)
-	// console.log("data here 3", data ? data.timeseries : data)
 	const numberOfCars = data.totalCars
 	const numberOfDays = data.timeseries ? data.timeseries.length : 0
-
-	const formattedForecast = []
-	for (var i = 0; i < forecastedData.length; i++) {
-		formattedForecast.push({
-			time: forecastedData[i].timestamp,
-			value: Math.round(forecastedData[i].value),
-		})
-	}
-	const [currentPage, setCurrentPage] = useState(1)
-	const [recordsPerPage] = useState(24)
-	// if (formattedForecast) {
-	const indexOfLastRecord = currentPage * recordsPerPage
-	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
-
-	const currentRecords =
-		formattedForecast &&
-		formattedForecast.slice(indexOfFirstRecord, indexOfLastRecord)
-
-	const nPages =
-		formattedForecast && Math.ceil(formattedForecast.length / recordsPerPage)
 
 	return (
 		<Container>
@@ -122,15 +77,7 @@ function Chart() {
 				<div></div>
 			</Cards>
 			<AllObservationsLineChartComponent />
-			<LineChartComponent data={currentRecords} />
-			{forecastedData && (
-				<Pagination
-					nPages={nPages}
-					currentPage={currentPage}
-					setCurrentPage={setCurrentPage}
-				/>
-			)}
-
+			<LineChartComponent />
 		</Container>
 	)
 }
@@ -142,18 +89,18 @@ const Container = styled.div`
 	height: 100vh;
 	overflow-y: scroll;
 `
-const Header = styled.div`
-	height: 10%;
-	width: 100%;
-	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-	display: flex;
-	align-items: center;
+// const Header = styled.div`
+// 	height: 10%;
+// 	width: 100%;
+// 	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+// 	display: flex;
+// 	align-items: center;
 
-	p {
-		margin-left: 3%;
-		font-size: 28px;
-	}
-`
+// 	p {
+// 		margin-left: 3%;
+// 		font-size: 28px;
+// 	}
+// `
 const Cards = styled.div`
 	display: flex;
 	margin: 50px;

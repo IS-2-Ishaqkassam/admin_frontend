@@ -5,7 +5,6 @@ import Axios from "axios"
 import TextField from "@mui/material/TextField"
 import SearchIcon from "@mui/icons-material/Search"
 import InputAdornment from "@mui/material/InputAdornment"
-
 import Pagination from "./Pagination"
 
 function TableComponent({ allResidents }) {
@@ -54,7 +53,6 @@ function TableComponent({ allResidents }) {
 	const indexOfLastRecord = currentPage * recordsPerPage
 	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
 
-	// Records to be displayed on the current page
 	const currentRecords =
 		allResidents && allResidents.slice(indexOfFirstRecord, indexOfLastRecord)
 

@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-// import {logo} from './img/logo'
 
 import React from "react"
 
@@ -52,7 +51,6 @@ const Logo = styled.div`
 	img {
 		background-color: white;
 		border-radius: 50%;
-		/* height: 70%; */
 		width: 70%;
 	}
 `
@@ -87,7 +85,6 @@ const Nav = styled.div`
 		border-radius: 10px;
 		background-color: #801c25;
 		font-size: 2em;
-		/* border: 1px solid black; */
 		display: flex;
 		justify-content: center;
 		align-items: center !important;

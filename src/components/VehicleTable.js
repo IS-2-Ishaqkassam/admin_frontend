@@ -57,12 +57,10 @@ function VehicleTableComponent({ allResidents }) {
 	}
 	var allVehicles = []
 
-	// useEffect(() => {
 	if (allResidents) {
 		const vehicleData = []
 		for (var i = 0; i < allResidents.length; i++) {
 			if (allResidents[i].vehicles.length > 0) {
-				// vehicleData.push(vehicles)
 				for (var j = 0; j < allResidents[i].vehicles[j].length; j++) {}
 				vehicleData.push(allResidents[i].vehicles)
 			}
@@ -72,7 +70,6 @@ function VehicleTableComponent({ allResidents }) {
 		console.log("arrrays: ", arrays)
 		console.log("vehicle table: ", allVehicles)
 	}
-	// }, [allResidents])
 
 	const searchHandler = (e) => {}
 
@@ -82,7 +79,6 @@ function VehicleTableComponent({ allResidents }) {
 	const indexOfLastRecord = currentPage * recordsPerPage
 	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
 
-	// Records to be displayed on the current page
 	const currentRecords =
 		allVehicles && allVehicles.slice(indexOfFirstRecord, indexOfLastRecord)
 
@@ -214,7 +210,6 @@ const Table = styled.div`
 	}
 
 	.table-container {
-		/* margin: 0px 0 0.5% 5%; */
 		height: 270px;
 		border: 1px solid lightgrey !important;
 		box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -249,11 +244,6 @@ const Table = styled.div`
 		border-bottom: 1px solid grey;
 		height: 45px;
 
-		input {
-			:focus {
-				/* outline: none; */
-			}
-		}
 	}
 
 	.table-rows {
@@ -298,7 +288,6 @@ const Table = styled.div`
 		}
 
 		#edit {
-			/* background-color: lightgreen; */
 			:hover {
 				background-color: lightgrey;
 				cursor: pointer;
@@ -361,7 +350,6 @@ const Table = styled.div`
 		}
 
 		#edit {
-			/* background-color: lightgreen; */
 			:hover {
 				background-color: lightgrey;
 				cursor: pointer;

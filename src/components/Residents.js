@@ -242,11 +242,7 @@ const Container = styled.div`
 		display: flex;
 		width: 90%;
 		margin: 2% 0 0 5%;
-
-		/* margin: 2% 0 0 5%; */
-		/* width: 87%; */
 		justify-content: space-around;
-		/* border: 1px solid black; */
 	}
 `
 const Form = styled.div`
