@@ -10,58 +10,16 @@ function Chart() {
 	var jobId = {}
 	var timeseriesToBeForecasted = []
 
+	async function getFakeTimeSeries() {
+		const fakeSeries = await Axios.get(
+			"http://localhost:4000/timeseries/realData"
+		)
+		setData(fakeSeries.data)
+	}
 	useEffect(() => {
-		Axios.get("http://localhost:4000/timeseries/fakeData")
-			.then((response) => {
-				console.log("fake data", response.data)
-				setData(response.data)
-			})
-			.then(() => {
-				timeseriesToBeForecasted = data.timeseries
-				console.log(
-					"data to send to forecast unplugg",
-					timeseriesToBeForecasted
-				)
-				Axios.post(
-					"https://api.unplu.gg/forecast",
-					{
-						data: timeseriesToBeForecasted,
-						forecast_to: 1663554366,
-						callback: "https://eop35ebikjh8te5.m.pipedream.net",
-					},
-					{
-						headers: {
-							"x-access-token":
-								"b1c709bf8c77f7c24244b923a006b8ced5a647b2d45f232dec8a04d32bd54624",
-							"Content-Type": "application/json",
-						},
-					}
-				)
-					.then((res) => {
-						console.log("after prediction response", res.data)
-						jobId["data"] = {
-							id: res.data.job_id,
-							date: res.headers.date,
-						}
-					})
-					.then(() => {
-						Axios.post("http://localhost:4000/jobs/", jobId)
-							.then((res) => {
-								console.log("posting jobid", res.data)
-								console.log("jobid", jobId)
-							})
-							.catch((err) => {
-								console.log("error posting the job id and date", err)
-							})
-					})
-					.catch((err) => {
-						console.log("error getting unplugg", err)
-					})
-			})
-			.catch((err) => {
-				console.log("error getting fake data", err)
-			})
+		getFakeTimeSeries()
 	}, [])
+	console.log("fake time series data: ", data.timeseries)
 
 	const numberOfCars = data.totalCars
 	const numberOfDays = data.timeseries ? data.timeseries.length : 0
@@ -72,7 +30,7 @@ function Chart() {
 				<p>Welcome, John Doe</p>
 			</Header> */}
 			<Cards>
-				<div>{Math.floor(numberOfDays / 24)} Days System Running</div>
+				<div>{Math.round(numberOfDays / 24)} Days System Running</div>
 				<div>{numberOfCars} Cars Scanned</div>
 				<div></div>
 			</Cards>
