@@ -28,10 +28,14 @@ const LineChartComponent = ({ data }) => {
 	return (
 		// <ResponsiveContainer width="100%" height="100%">
 		<Parent>
-			<LineChart width={900} height={300} data={currentRecords}>
+			<LineChart width={700} height={300} data={currentRecords}>
 				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis  dataKey="hourOfDay" />
-				<XAxis xAxisId="2" dataKey="date" allowDuplicatedCategory={false} />
+				<XAxis dataKey="hourOfDay" />
+				<XAxis
+					xAxisId="2"
+					dataKey="date_month"
+					allowDuplicatedCategory={false}
+				/>
 				<YAxis />
 				<Tooltip />
 				<Legend />
@@ -41,12 +45,6 @@ const LineChartComponent = ({ data }) => {
 					stroke="#8884d8"
 					activeDot={{ r: 8 }}
 				/>
-				{/* <Line
-					type="monotone"
-					dataKey="count"
-					stroke="#8884d8"
-					activeDot={{ r: 8 }}
-				/> */}
 			</LineChart>
 			<Pagination
 				nPages={nPages}
