@@ -34,9 +34,8 @@ const LineChartComponent = () => {
 	const nPages = data && Math.ceil(data.length / recordsPerPage)
 
 	return (
-		// <ResponsiveContainer width="100%" height="100%">
 		<Parent>
-			<LineChart width={900} height={300} data={currentRecords}>
+			<LineChart width={700} height={300} data={currentRecords}>
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis dataKey="time" />
 				<YAxis />
@@ -56,13 +55,11 @@ const LineChartComponent = () => {
 			/>
 		</Parent>
 
-		// </ResponsiveContainer>
 	)
 }
 export default LineChartComponent
 
 const Parent = styled.div`
-	width: 60%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

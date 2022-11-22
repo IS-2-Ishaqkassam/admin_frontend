@@ -3,8 +3,8 @@ import Axios from "axios"
 import styled from "styled-components"
 import React from "react"
 import LineChartComponent from "./LineChart"
-import AllObservationsLineChartComponent from "./AllObservationsLineChartComponent"
-import WeeklyTable from "./WeeklyTable"
+import LiveFeedTable from "./LiveFeedTable"
+import WeeklyChart from "./WeeklyChart"
 function Chart() {
 	const [alldata, setData] = useState([])
 	const [allResidents, setAllResidents] = useState([])
@@ -14,7 +14,6 @@ function Chart() {
 			"http://localhost:4000/timeseries/fakeData"
 		)
 		setData(data)
-		console.log("data", alldata)
 		const resident = await Axios.get("http://localhost:4000/resident")
 		setAllResidents(resident.data)
 	}
@@ -22,8 +21,6 @@ function Chart() {
 	useEffect(() => {
 		getFakeTimeSeries()
 	}, [])
-	console.log("fake time series data: ", alldata)
-	console.log("all residents: ", allResidents)
 
 	const numberOfCars = alldata.totalCars
 
@@ -32,15 +29,21 @@ function Chart() {
 			<Header>
 				<p>Welcome, John Doe</p>
 			</Header>
-			<Cards>
-				<div>{Math.round(allResidents.length)} Residents</div>
-				<div>{numberOfCars} Cars Scanned</div>
-				<div></div>
-			</Cards>
+			<div className="body">
+				<Cards>
+					<div>{Math.round(allResidents.length)} Residents</div>
+					<div>{numberOfCars} Cars Scanned</div>
+					<div></div>
+				</Cards>
 
-			<WeeklyTable data={alldata.timeseries} />
-			{/* <AllObservationsLineChartComponent /> */}
-			<LineChartComponent />
+				<Charts>
+					<div>
+						<WeeklyChart data={alldata.timeseries} />
+						<LineChartComponent />
+					</div>
+					<LiveFeedTable />
+				</Charts>
+			</div>
 		</Container>
 	)
 }
@@ -48,9 +51,13 @@ function Chart() {
 export default Chart
 
 const Container = styled.div`
-	width: 87%;
+	width: 100%;
 	height: 100vh;
-	overflow-y: scroll;
+
+	.body {
+		height: 90%;
+		overflow-y: scroll;
+	}
 `
 const Header = styled.div`
 	height: 10%;
@@ -60,7 +67,7 @@ const Header = styled.div`
 	align-items: center;
 
 	p {
-		margin-left: 3%;
+		margin-left: 3% !important;
 		font-size: 28px;
 	}
 `
@@ -75,4 +82,8 @@ const Cards = styled.div`
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
 			rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 	}
+`
+const Charts = styled.div`
+	display: flex;
+	justify-content: space-around;
 `

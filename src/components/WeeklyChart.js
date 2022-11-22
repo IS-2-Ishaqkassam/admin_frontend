@@ -6,10 +6,8 @@ import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
 import LineChartComponent from "./LineChartTemplate"
 
-function WeeklyTable({ data }) {
+function WeeklyChart({ data }) {
 	const [day, setDay] = useState("")
-
-	console.log("alldata", data)
 
 	const handleChange = (event) => {
 		setDay(event.target.value)
@@ -42,13 +40,6 @@ function WeeklyTable({ data }) {
 			}
 		}
 	}
-	console.log("Monday", Monday)
-	console.log("Tue", Tuesday)
-	console.log("Wed", Wednesday)
-	console.log("Thur", Thursday)
-	console.log("Fri", Friday)
-	console.log("Sat", Saturday)
-	console.log("Sun", Sunday)
 
 	return (
 		<Table className="table">
@@ -94,16 +85,14 @@ function WeeklyTable({ data }) {
 	)
 }
 
-export default WeeklyTable
+export default WeeklyChart
 
 const Table = styled.div`
-	width: 45%;
-	/* border: 1px solid black; */
 	display: flex;
 	flex-direction: column;
+
 	.dropdown-container {
 		text-align: right;
-		/* border: 1px solid red; */
 
 		.dropdown {
 			text-align: left;

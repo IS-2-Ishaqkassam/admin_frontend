@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField"
 import CancelIcon from "@mui/icons-material/Cancel"
 import Axios from "axios"
 
-import Pagination from "./Pagination"
 import TableComponent from "./ResidentTable"
 import VehicleTableComponent from "./VehicleTable"
 
@@ -31,8 +30,6 @@ function Residents() {
 	const allDetails = {
 		vehicles: [],
 	}
-
-	//pagination
 
 	//useEffect
 	useEffect(() => {

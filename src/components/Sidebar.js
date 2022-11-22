@@ -22,11 +22,6 @@ function Sidebar() {
 							<p>Resident Details</p>
 						</li>
 					</Link>
-					{/* <Link to="/weekly">
-						<li>
-							<p>Weekly Table</p>
-						</li>
-					</Link> */}
 				</ul>
 
 				<div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import {
 	LineChart,
 	Line,
@@ -9,7 +9,6 @@ import {
 	Legend,
 	ResponsiveContainer,
 } from "recharts"
-import Axios from "axios"
 import styled from "styled-components"
 import Pagination from "./Pagination"
 
@@ -23,10 +22,8 @@ const LineChartComponent = ({ data }) => {
 		data && data.slice(indexOfFirstRecord, indexOfLastRecord)
 
 	const nPages = data && Math.ceil(data.length / recordsPerPage)
-	console.log("data in template: ", data)
 
 	return (
-		// <ResponsiveContainer width="100%" height="100%">
 		<Parent>
 			<LineChart width={700} height={300} data={currentRecords}>
 				<CartesianGrid strokeDasharray="3 3" />
@@ -52,14 +49,11 @@ const LineChartComponent = ({ data }) => {
 				setCurrentPage={setCurrentPage}
 			/>
 		</Parent>
-
-		// </ResponsiveContainer>
 	)
 }
 export default LineChartComponent
 
 const Parent = styled.div`
-	/* width: 60%; */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
