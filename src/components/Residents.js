@@ -265,7 +265,7 @@ const Header = styled.div`
 	align-items: center;
 
 	p {
-		margin-left: 3%;
+		margin-left: 3% !important;
 		font-size: 28px;
 	}
 `

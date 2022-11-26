@@ -4,10 +4,13 @@ import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
-import LineChartComponent from "./LineChartTemplate"
+import LineChartTemplate from "./LineChartTemplate"
 
-function WeeklyChart({ data }) {
+import Axios from "axios"
+
+function WeeklyChart({ data, fromChild }) {
 	const [day, setDay] = useState("")
+	const [week, setWeek] = useState({})
 
 	const handleChange = (event) => {
 		setDay(event.target.value)
@@ -21,6 +24,7 @@ function WeeklyChart({ data }) {
 	const Friday = []
 	const Saturday = []
 	const Sunday = []
+	console.log("data in weekly charts", data)
 	if (data) {
 		for (let i = 0; i < data.length; i++) {
 			if (data[i].dayOfWeek == 0) {
@@ -40,10 +44,203 @@ function WeeklyChart({ data }) {
 			}
 		}
 	}
+	console.log("format", Monday)
 
+	const SaturdayHours = Saturday.reduce((groups, item) => {
+		const group = groups[item.hourOfDay] || []
+		group.push(item.vehicle_count)
+		groups[item.hourOfDay] = group
+		group["average"] = Math.floor(
+			group.reduce((a, b) => a + b, 0) / group.length
+		)
+		// console.log("group", group)
+		// console.log("groups", groups)
+		// console.log("item", item)
+		// group["hour"] = Object.entries(groups)[0][0]
+		group["hourOfDay"] = item.hourOfDay
+		if (group["average"] < 30) {
+			group["traffic_density"] = "low"
+			group["Min Guards Required"] = 2
+		} else if (group["average"] < 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 3
+		} else if (group["average"] > 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 5
+		}
+		return groups
+	}, {})
+	console.log("saturday hours", SaturdayHours)
+	const SundayHours = Sunday.reduce((groups, item) => {
+		const group = groups[item.hourOfDay] || []
+		group.push(item.vehicle_count)
+		groups[item.hourOfDay] = group
+		group["average"] = Math.floor(
+			group.reduce((a, b) => a + b, 0) / group.length
+		)
+		group["hourOfDay"] = item.hourOfDay
+		if (group["average"] < 30) {
+			group["traffic_density"] = "low"
+			group["Min Guards Required"] = 2
+		} else if (group["average"] < 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 3
+		} else if (group["average"] > 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 5
+		}
+
+		return groups
+	}, {})
+	const MondayHours = Monday.reduce((groups, item) => {
+		const group = groups[item.hourOfDay] || []
+		group.push(item.vehicle_count)
+		groups[item.hourOfDay] = group
+		group["average"] = Math.floor(
+			group.reduce((a, b) => a + b, 0) / group.length
+		)
+		group["hourOfDay"] = item.hourOfDay
+		if (group["average"] < 30) {
+			group["traffic_density"] = "low"
+			group["Min Guards Required"] = 2
+		} else if (group["average"] < 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 3
+		} else if (group["average"] > 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 5
+		}
+		return groups
+	}, {})
+	const TuesdayHours = Tuesday.reduce((groups, item) => {
+		const group = groups[item.hourOfDay] || []
+		group.push(item.vehicle_count)
+		groups[item.hourOfDay] = group
+		group["average"] = Math.floor(
+			group.reduce((a, b) => a + b, 0) / group.length
+		)
+		group["hourOfDay"] = item.hourOfDay
+		if (group["average"] < 30) {
+			group["traffic_density"] = "low"
+			group["Min Guards Required"] = 2
+		} else if (group["average"] < 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 3
+		} else if (group["average"] > 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 5
+		}
+		return groups
+	}, {})
+	const WednesdayHours = Wednesday.reduce((groups, item) => {
+		const group = groups[item.hourOfDay] || []
+		group.push(item.vehicle_count)
+		groups[item.hourOfDay] = group
+		group["average"] = Math.floor(
+			group.reduce((a, b) => a + b, 0) / group.length
+		)
+		group["hourOfDay"] = item.hourOfDay
+		if (group["average"] < 30) {
+			group["traffic_density"] = "low"
+			group["Min Guards Required"] = 2
+		} else if (group["average"] < 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 3
+		} else if (group["average"] > 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 5
+		}
+		return groups
+	}, {})
+	const ThursdayHours = Thursday.reduce((groups, item) => {
+		const group = groups[item.hourOfDay] || []
+		group.push(item.vehicle_count)
+		groups[item.hourOfDay] = group
+		group["average"] = Math.floor(
+			group.reduce((a, b) => a + b, 0) / group.length
+		)
+		group["hourOfDay"] = item.hourOfDay
+		if (group["average"] < 30) {
+			group["traffic_density"] = "low"
+			group["Min Guards Required"] = 2
+		} else if (group["average"] < 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 3
+		} else if (group["average"] > 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 5
+		}
+		return groups
+	}, {})
+	const FridayHours = Friday.reduce((groups, item) => {
+		const group = groups[item.hourOfDay] || []
+		group.push(item.vehicle_count)
+		groups[item.hourOfDay] = group
+		group["average"] = Math.floor(
+			group.reduce((a, b) => a + b, 0) / group.length
+		)
+		group["hourOfDay"] = item.hourOfDay
+		if (group["average"] < 30) {
+			group["traffic_density"] = "low"
+			group["Min Guards Required"] = 2
+		} else if (group["average"] < 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 3
+		} else if (group["average"] > 60) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 5
+		}
+		return groups
+	}, {})
+	console.log("thursday in weekly charts", ThursdayHours)
+
+	// fromChild(Week)
+	// return Week
+	// console.log(consolidateHours())
+	// const setWeekFunction = () => {
+	const Week = {
+		MondayHours,
+		TuesdayHours,
+		WednesdayHours,
+		ThursdayHours,
+		FridayHours,
+		SaturdayHours,
+		SundayHours,
+	}
+	// fromChild(week)
+	// }
+	useEffect(() => {
+		// setWeekFunction()
+		console.log("Week", Week)
+	}, [week])
+
+	const generateGuardSchedule = () => {
+		fromChild(Week)
+		console.log("Week", Week)
+	}
+	// useEffect(() => {
+	// 	setInterval(() => {
+	// 		// fromChild(Week)
+	// 	}, 3600000)
+	// }, [Week])
+	// if (Week) {
+	// }
+
+	// Axios.post("http://localhost:4000/timeseries/predict", {
+	// 	Monday,
+	// 	Tuesday,
+	// 	Wednesday,
+	// 	Thursday,
+	// 	Friday,
+	// 	Saturday,
+	// 	Sunday,
+	// }).then((res) => {
+	// 	console.log(res.data)
+	// })
 	return (
 		<Table className="table">
 			<div className="dropdown-container">
+				<button onClick={generateGuardSchedule}>Click</button>
 				<FormControl className="dropdown">
 					<InputLabel id="demo-simple-select-label">Day</InputLabel>
 					<Select
@@ -65,21 +262,21 @@ function WeeklyChart({ data }) {
 				</FormControl>
 			</div>
 			{day === "Sunday" ? (
-				<LineChartComponent data={Sunday} />
+				<LineChartTemplate data={Sunday} />
 			) : day === "Monday" ? (
-				<LineChartComponent data={Monday} />
+				<LineChartTemplate data={Monday} />
 			) : day === "Tuesday" ? (
-				<LineChartComponent data={Tuesday} />
+				<LineChartTemplate data={Tuesday} />
 			) : day === "Wednesday" ? (
-				<LineChartComponent data={Wednesday} />
+				<LineChartTemplate data={Wednesday} />
 			) : day == "Thursday" ? (
-				<LineChartComponent data={Thursday} />
+				<LineChartTemplate data={Thursday} />
 			) : day === "Friday" ? (
-				<LineChartComponent data={Friday} />
+				<LineChartTemplate data={Friday} />
 			) : day === "Saturday" ? (
-				<LineChartComponent data={Saturday} />
+				<LineChartTemplate data={Saturday} />
 			) : (
-				<LineChartComponent data={Sunday} />
+				<LineChartTemplate data={Sunday} />
 			)}
 		</Table>
 	)
