@@ -17,19 +17,14 @@ function Chart() {
 		)
 		setAllData(fakeData.data)
 		const dataToSend = []
-		// if (alldata) {
 		for (var i = 0; i < fakeData.data.timeseries.length; i++) {
 			dataToSend.push({
 				date: fakeData.data.timeseries[i].data.timestamp,
 				count: fakeData.data.timeseries[i].data.count,
 			})
 		}
-		// console.log("data to send", dataToSend)
 
 		Axios.post("http://localhost:4000/timeseries/predict", dataToSend)
-		// }
-		// console.log("all data", alldata.timeseries[0].data.count)
-		// console.log("data: ", fakeData.data)
 		const resident = await Axios.get("http://localhost:4000/resident")
 		setResidents(resident.data)
 	}
@@ -37,9 +32,7 @@ function Chart() {
 	useEffect(() => {
 		getFakeTimeSeries()
 	}, [])
-	//
 
-	// console.log("residents: ", residents)
 	const numberOfCars = alldata.totalCars
 
 	function flatten(arr) {
@@ -61,11 +54,9 @@ function Chart() {
 		const arrays = flatten(vehicleData)
 		allVehicles = arrays
 	}
-	// console.log("all vehicles", allVehicles)
 
 	const fromChild = (data) => {
 		setDataFromChild(data)
-		console.log("data from child to chart.js", data)
 	}
 
 	return (

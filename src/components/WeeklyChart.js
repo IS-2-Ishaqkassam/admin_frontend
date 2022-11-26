@@ -6,11 +6,8 @@ import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
 import LineChartTemplate from "./LineChartTemplate"
 
-import Axios from "axios"
-
 function WeeklyChart({ data, fromChild }) {
 	const [day, setDay] = useState("")
-	const [week, setWeek] = useState({})
 
 	const handleChange = (event) => {
 		setDay(event.target.value)
@@ -24,7 +21,6 @@ function WeeklyChart({ data, fromChild }) {
 	const Friday = []
 	const Saturday = []
 	const Sunday = []
-	console.log("data in weekly charts", data)
 	if (data) {
 		for (let i = 0; i < data.length; i++) {
 			if (data[i].dayOfWeek == 0) {
@@ -44,7 +40,6 @@ function WeeklyChart({ data, fromChild }) {
 			}
 		}
 	}
-	console.log("format", Monday)
 
 	const SaturdayHours = Saturday.reduce((groups, item) => {
 		const group = groups[item.hourOfDay] || []
@@ -53,10 +48,6 @@ function WeeklyChart({ data, fromChild }) {
 		group["average"] = Math.floor(
 			group.reduce((a, b) => a + b, 0) / group.length
 		)
-		// console.log("group", group)
-		// console.log("groups", groups)
-		// console.log("item", item)
-		// group["hour"] = Object.entries(groups)[0][0]
 		group["hourOfDay"] = item.hourOfDay
 		if (group["average"] < 30) {
 			group["traffic_density"] = "low"
@@ -70,7 +61,6 @@ function WeeklyChart({ data, fromChild }) {
 		}
 		return groups
 	}, {})
-	console.log("saturday hours", SaturdayHours)
 	const SundayHours = Sunday.reduce((groups, item) => {
 		const group = groups[item.hourOfDay] || []
 		group.push(item.vehicle_count)
@@ -192,12 +182,7 @@ function WeeklyChart({ data, fromChild }) {
 		}
 		return groups
 	}, {})
-	console.log("thursday in weekly charts", ThursdayHours)
 
-	// fromChild(Week)
-	// return Week
-	// console.log(consolidateHours())
-	// const setWeekFunction = () => {
 	const Week = {
 		MondayHours,
 		TuesdayHours,
@@ -207,36 +192,10 @@ function WeeklyChart({ data, fromChild }) {
 		SaturdayHours,
 		SundayHours,
 	}
-	// fromChild(week)
-	// }
-	useEffect(() => {
-		// setWeekFunction()
-		console.log("Week", Week)
-	}, [week])
 
 	const generateGuardSchedule = () => {
 		fromChild(Week)
-		console.log("Week", Week)
 	}
-	// useEffect(() => {
-	// 	setInterval(() => {
-	// 		// fromChild(Week)
-	// 	}, 3600000)
-	// }, [Week])
-	// if (Week) {
-	// }
-
-	// Axios.post("http://localhost:4000/timeseries/predict", {
-	// 	Monday,
-	// 	Tuesday,
-	// 	Wednesday,
-	// 	Thursday,
-	// 	Friday,
-	// 	Saturday,
-	// 	Sunday,
-	// }).then((res) => {
-	// 	console.log(res.data)
-	// })
 	return (
 		<Table className="table">
 			<div className="dropdown-container">
@@ -247,7 +206,6 @@ function WeeklyChart({ data, fromChild }) {
 						labelId="demo-simple-select-label"
 						id="demo-simple-select"
 						value={day}
-						// defaultValue={Sunday}
 						label="Day"
 						onChange={handleChange}
 					>

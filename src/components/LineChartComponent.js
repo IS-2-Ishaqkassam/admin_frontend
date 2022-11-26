@@ -1,38 +1,14 @@
 import React, { useState, useEffect } from "react"
-import {
-	LineChart,
-	Line,
-	XAxis,
-	YAxis,
-	CartesianGrid,
-	Tooltip,
-	Legend,
-	ResponsiveContainer,
-} from "recharts"
-import Axios from "axios"
 
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
 import styled from "styled-components"
-import Pagination from "./Pagination"
 import GuardLineChartTemplate from "./GuardLineChartTemplate"
 
 const LineChartComponent = ({ data }) => {
-	const [allData, setAllData] = useState([])
 	const [day, setDay] = useState("")
-	const [week, setWeek] = useState({})
-	// useEffect(() => {
-	// 	Axios.get("http://localhost:4000/forecast/1668155715965:HJ3HYYsSo").then(
-	// 		(res) => {
-	// 			setData(res.data)
-	// 		}
-	// 	)
-	// }, [])
-	useEffect(() => {
-		setAllData(data)
-	}, [])
 	const handleChange = (event) => {
 		setDay(event.target.value)
 	}
@@ -68,41 +44,17 @@ const LineChartComponent = ({ data }) => {
 		for (var key in data["SundayHours"]) {
 			Sunday.push(data["SundayHours"][key])
 		}
-
-		// data["MondayHours"].map((item) => {
-		// 	Monday.push(item)
-		// })
-		// for (let i = 0; i < data["ModayHours"].length; i++) {
-		// 	Monday.push({
-		// 		time: Object.keys(data["MondayHours"]),
-		// 	})
-		// }
-		// Monday.push({ time: Object.keys(data["MondayHours"]) })
 	}
-	console.log("Monday in pred", Monday)
-	console.log("guard select day", day)
-
-	// const [currentPage, setCurrentPage] = useState(1)
-	// const [recordsPerPage] = useState(24)
-	// const indexOfLastRecord = currentPage * recordsPerPage
-	// const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
-
-	// const currentRecords =
-	// 	data && data.slice(indexOfFirstRecord, indexOfLastRecord)
-
-	// const nPages = data && Math.ceil(data.length / recordsPerPage)
 
 	return (
 		<Table className="table">
 			<div className="dropdown-container">
-				{/* <button onClick={generateGuardSchedule}>Click</button> */}
 				<FormControl className="dropdown">
 					<InputLabel id="demo-simple-select-label">Day</InputLabel>
 					<Select
 						labelId="demo-simple-select-label"
 						id="demo-simple-select"
 						value={day}
-						// defaultValue={Sunday}
 						label="Day"
 						onChange={handleChange}
 					>
