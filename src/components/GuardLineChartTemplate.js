@@ -17,7 +17,7 @@ const GuardLineChartTemplate = ({ data }) => {
 			<LineChart width={700} height={300} data={data}>
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis dataKey="hourOfDay" />
-				<YAxis />
+				<YAxis allowDecimals={false} allowDataOverflow={true} />
 				<Tooltip />
 				<Legend />
 				<Line

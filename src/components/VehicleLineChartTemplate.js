@@ -25,7 +25,7 @@ const LineChartTemplate = ({ data }) => {
 
 	return (
 		<Parent>
-			<LineChart width={700} height={300} data={currentRecords}>
+			<LineChart width={900} height={300} data={currentRecords}>
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis dataKey="hourOfDay" />
 				<XAxis
@@ -56,5 +56,7 @@ export default LineChartTemplate
 const Parent = styled.div`
 	display: flex;
 	flex-direction: column;
+	/* border: 1px solid black; */
 	align-items: center;
+	justify-content: center;
 `

@@ -24,9 +24,9 @@ function Sidebar() {
 					</Link>
 				</ul>
 
-				<div>
+				{/* <div>
 					<p>Logout</p>
-				</div>
+				</div> */}
 			</Nav>
 		</Container>
 	)

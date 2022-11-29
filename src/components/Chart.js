@@ -72,10 +72,10 @@ function Chart() {
 				</Cards>
 
 				<Charts>
-					<div>
+					<LineCharts>
 						<WeeklyChart fromChild={fromChild} data={alldata.timeseries} />
 						<LineChartComponent data={dataFromChild} />
-					</div>
+					</LineCharts>
 					<LiveFeedTable />
 				</Charts>
 			</div>
@@ -121,4 +121,8 @@ const Cards = styled.div`
 const Charts = styled.div`
 	display: flex;
 	justify-content: space-around;
+
+`
+const LineCharts = styled.div`
+	width: 55%;
 `

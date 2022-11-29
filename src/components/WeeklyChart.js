@@ -4,13 +4,22 @@ import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
-import LineChartTemplate from "./LineChartTemplate"
+import LineChartTemplate from "./VehicleLineChartTemplate"
+// import ARIMAPromise from "arima/async"
+// import predict from '../Arima'
+import * as tf from "@tensorflow/tfjs"
+var ema = require("exponential-moving-average")
 
 function WeeklyChart({ data, fromChild }) {
 	const [day, setDay] = useState("")
 
 	const handleChange = (event) => {
 		setDay(event.target.value)
+	}
+	const predict = (data) => {
+		const weight = 2.5
+		const prediction = data * weight
+		return prediction
 	}
 
 	//data in days
@@ -48,6 +57,16 @@ function WeeklyChart({ data, fromChild }) {
 		group["average"] = Math.floor(
 			group.reduce((a, b) => a + b, 0) / group.length
 		)
+		const observations = group.filter((element) => typeof element === "number")
+		group["predicted"] = ema(observations, 1)
+		// const observations = tf.tensor(group.filter((element) => typeof element === "number")[0])
+		console.log("group", group)
+		console.log("observations", observations)
+		const data = observations[0]
+		const prediction = predict(data)
+
+		// console.log("data in tf saturdayhrs ", data)
+		console.log("prediction in tf saturdayhrs ", prediction)
 		group["hourOfDay"] = item.hourOfDay
 		if (group["average"] < 30) {
 			group["traffic_density"] = "low"
@@ -61,6 +80,7 @@ function WeeklyChart({ data, fromChild }) {
 		}
 		return groups
 	}, {})
+	console.log("saturdayhrs", SaturdayHours)
 	const SundayHours = Sunday.reduce((groups, item) => {
 		const group = groups[item.hourOfDay] || []
 		group.push(item.vehicle_count)
@@ -244,7 +264,13 @@ export default WeeklyChart
 
 const Table = styled.div`
 	display: flex;
+	justify-content: center;
+	/* align-items: center; */
 	flex-direction: column;
+	border: 1px solid black;
+	padding: 10px 35px 0 0;
+
+	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
 	.dropdown-container {
 		text-align: right;
@@ -252,7 +278,7 @@ const Table = styled.div`
 		.dropdown {
 			text-align: left;
 			width: 25%;
-			margin: 0px 25px 0 11%;
+			margin: 0px 0px 0 11%;
 		}
 	}
 `
