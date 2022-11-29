@@ -65,19 +65,25 @@ function Chart() {
 				<p>Welcome, John Doe</p>
 			</Header>
 			<div className="body">
-				<Cards>
-					<div>{Math.round(residents.length)} Residents</div>
-					<div>{numberOfCars} Cars Scanned</div>
-					<div>{allVehicles.length} Resident Cars</div>
-				</Cards>
+				<div className="left">
+					<Cards>
+						<div>{Math.round(residents.length)} Residents</div>
+						<div>{numberOfCars} Cars Scanned</div>
+						<div>{allVehicles.length} Resident Cars</div>
+					</Cards>
+					<div className="table">
+						<LiveFeedTable />
+					</div>
+				</div>
 
-				<Charts>
-					<LineCharts>
-						<WeeklyChart fromChild={fromChild} data={alldata.timeseries} />
-						<LineChartComponent data={dataFromChild} />
-					</LineCharts>
-					<LiveFeedTable />
-				</Charts>
+				<div className="right">
+					<Charts>
+						<LineCharts>
+							<WeeklyChart fromChild={fromChild} data={alldata.timeseries} />
+							<LineChartComponent data={dataFromChild} />
+						</LineCharts>
+					</Charts>
+				</div>
 			</div>
 		</Container>
 	)
@@ -90,12 +96,29 @@ const Container = styled.div`
 	height: 100vh;
 
 	.body {
-		height: 90%;
-		overflow-y: scroll;
+		height: 93%;
+		display: flex;
+		/* overflow-y: scroll; */
+
+		.left {
+			width: 45%;
+
+			.table {
+				display: flex;
+				justify-content: center;
+				/* border: 1px solid black; */
+			}
+		}
+		.right {
+			margin: 50px 0;
+			display: flex;
+			justify-content: center;
+			width: 55%;
+		}
 	}
 `
 const Header = styled.div`
-	height: 10%;
+	height: 7%;
 	width: 100%;
 	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 	display: flex;
@@ -103,16 +126,16 @@ const Header = styled.div`
 
 	p {
 		margin-left: 3% !important;
-		font-size: 28px;
+		font-size: 25px;
 	}
 `
 const Cards = styled.div`
 	display: flex;
-	margin: 50px;
+	margin: 50px 0 20px 20px;
 
 	div {
-		height: 150px;
-		margin: 0 50px;
+		height: 130px;
+		margin: 0 20px;
 		width: 250px;
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
 			rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -121,8 +144,7 @@ const Cards = styled.div`
 const Charts = styled.div`
 	display: flex;
 	justify-content: space-around;
-
 `
 const LineCharts = styled.div`
-	width: 55%;
+	/* width: 55%; */
 `

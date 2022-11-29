@@ -49,7 +49,7 @@ const LineChartComponent = ({ data }) => {
 	return (
 		<Table className="table">
 			<div className="dropdown-container">
-				<FormControl className="dropdown">
+				<FormControl className="dropdown" size="small">
 					<InputLabel id="demo-simple-select-label">Day</InputLabel>
 					<Select
 						labelId="demo-simple-select-label"
@@ -93,6 +93,8 @@ export default LineChartComponent
 const Table = styled.div`
 	display: flex;
 	flex-direction: column;
+	padding: 10px 35px 0 0;
+	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
 	.dropdown-container {
 		text-align: right;
@@ -100,7 +102,7 @@ const Table = styled.div`
 		.dropdown {
 			text-align: left;
 			width: 25%;
-			margin: 0px 25px 0 11%;
+			margin: 0px 3px 0 11%;
 		}
 	}
 `

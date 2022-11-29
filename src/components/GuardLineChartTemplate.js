@@ -14,7 +14,7 @@ import styled from "styled-components"
 const GuardLineChartTemplate = ({ data }) => {
 	return (
 		<Parent>
-			<LineChart width={700} height={300} data={data}>
+			<LineChart width={800} height={300} data={data}>
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis dataKey="hourOfDay" />
 				<YAxis allowDecimals={false} allowDataOverflow={true} />
@@ -36,4 +36,5 @@ const Parent = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 `

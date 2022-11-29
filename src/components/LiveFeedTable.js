@@ -22,7 +22,7 @@ function LiveFeedTable() {
 	const searchHandler = (e) => {}
 
 	const [currentPage, setCurrentPage] = useState(1)
-	const [recordsPerPage] = useState(14)
+	const [recordsPerPage] = useState(10)
 	const indexOfLastRecord = currentPage * recordsPerPage
 	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
 	const currentRecords =
@@ -78,7 +78,8 @@ function LiveFeedTable() {
 export default LiveFeedTable
 
 const Table = styled.div`
-	width: 35%;
+	width: 85%;
+	margin: 30px 0;
 	.search {
 		margin: 0% 0 1% 0%;
 		display: flex;

@@ -220,7 +220,7 @@ function WeeklyChart({ data, fromChild }) {
 		<Table className="table">
 			<div className="dropdown-container">
 				<button onClick={generateGuardSchedule}>Click</button>
-				<FormControl className="dropdown">
+				<FormControl className="dropdown" size="small">
 					<InputLabel id="demo-simple-select-label">Day</InputLabel>
 					<Select
 						labelId="demo-simple-select-label"
@@ -267,9 +267,8 @@ const Table = styled.div`
 	justify-content: center;
 	/* align-items: center; */
 	flex-direction: column;
-	border: 1px solid black;
+	/* border: 1px solid black; */
 	padding: 10px 35px 0 0;
-
 	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
 	.dropdown-container {
@@ -278,7 +277,7 @@ const Table = styled.div`
 		.dropdown {
 			text-align: left;
 			width: 25%;
-			margin: 0px 0px 0 11%;
+			margin: 0px 3px 0 11%;
 		}
 	}
 `
