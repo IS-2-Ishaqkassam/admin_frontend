@@ -14,6 +14,7 @@ import styled from "styled-components"
 const GuardLineChartTemplate = ({ data }) => {
 	return (
 		<Parent>
+			
 			<LineChart width={800} height={300} data={data}>
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis dataKey="hourOfDay" />

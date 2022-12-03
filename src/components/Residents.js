@@ -10,6 +10,7 @@ import VehicleTableComponent from "./VehicleTable"
 function Residents() {
 	//variable and states
 	const [allResidents, setAllResidents] = useState()
+	const [refreshState, setRefreshState] = useState(false)
 	const [allVehicles, setAllVehicles] = useState([
 		{
 			vehicle_number_plate: "",
@@ -40,7 +41,7 @@ function Residents() {
 			.catch((error) => {
 				console.log("error getting all residents", error)
 			})
-	}, [])
+	}, [refreshState])
 
 	console.log("outside", allResidents)
 
@@ -93,6 +94,13 @@ function Residents() {
 			.catch((err) => {
 				console.log("Failed to Submit Resident Details")
 			})
+	}
+	const refresh = (refresh) => {
+		if (refreshState === true) {
+			setRefreshState(false)
+		} else {
+			setRefreshState(true)
+		}
 	}
 
 	return (
@@ -223,7 +231,7 @@ function Residents() {
 			<div className="tables">
 				<TableComponent allResidents={allResidents} />
 
-				<VehicleTableComponent allResidents={allResidents} />
+				<VehicleTableComponent allResidents={allResidents} refresh={refresh} />
 			</div>
 		</Container>
 	)

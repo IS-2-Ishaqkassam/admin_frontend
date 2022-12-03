@@ -7,7 +7,7 @@ import InputAdornment from "@mui/material/InputAdornment"
 
 import Pagination from "./Pagination"
 
-function VehicleTableComponent({ allResidents }) {
+function VehicleTableComponent({ allResidents, refresh }) {
 	const [edit, setEdit] = useState(false)
 	const [searchText, setSearchText] = useState("")
 	const [currentRow, setCurrentRow] = useState()
@@ -40,7 +40,9 @@ function VehicleTableComponent({ allResidents }) {
 		})
 			.then((res) => {
 				console.log("saved edit success: ", res)
-				setEdit(false)
+				setEdit( false )
+				refresh(true)
+				
 			})
 			.catch((err) => {
 				console.log("error saving resident edit", err)

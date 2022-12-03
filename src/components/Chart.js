@@ -78,10 +78,8 @@ function Chart() {
 
 				<div className="right">
 					<Charts>
-						<LineCharts>
-							<WeeklyChart fromChild={fromChild} data={alldata.timeseries} />
-							<LineChartComponent data={dataFromChild} />
-						</LineCharts>
+						<WeeklyChart fromChild={fromChild} data={alldata.timeseries} />
+						<LineChartComponent data={dataFromChild} />
 					</Charts>
 				</div>
 			</div>
@@ -98,7 +96,6 @@ const Container = styled.div`
 	.body {
 		height: 93%;
 		display: flex;
-		/* overflow-y: scroll; */
 
 		.left {
 			width: 45%;
@@ -106,7 +103,6 @@ const Container = styled.div`
 			.table {
 				display: flex;
 				justify-content: center;
-				/* border: 1px solid black; */
 			}
 		}
 		.right {
@@ -143,8 +139,6 @@ const Cards = styled.div`
 `
 const Charts = styled.div`
 	display: flex;
+	flex-direction: column;
 	justify-content: space-around;
-`
-const LineCharts = styled.div`
-	/* width: 55%; */
 `
