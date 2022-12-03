@@ -229,7 +229,7 @@ function Residents() {
 			</ResidentForm>
 
 			<div className="tables">
-				<TableComponent allResidents={allResidents} />
+				<TableComponent allResidents={allResidents} refresh={refresh} />
 
 				<VehicleTableComponent allResidents={allResidents} refresh={refresh} />
 			</div>

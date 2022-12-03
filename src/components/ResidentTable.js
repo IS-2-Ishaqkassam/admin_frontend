@@ -7,7 +7,7 @@ import SearchIcon from "@mui/icons-material/Search"
 import InputAdornment from "@mui/material/InputAdornment"
 import Pagination from "./Pagination"
 
-function TableComponent({ allResidents }) {
+function TableComponent({ allResidents, refresh }) {
 	const [edit, setEdit] = useState(false)
 	const [searchText, setSearchText] = useState("")
 	const [currentRow, setCurrentRow] = useState()
@@ -29,8 +29,10 @@ function TableComponent({ allResidents }) {
 		const resident_name = resident_name_ref.current.value
 		const resident_email = resident_email_ref.current.value
 		const resident_house_number = resident_house_number_ref.current.value
-		console.log("row refs", resident_name)
-		console.log("current row saving", currentRow)
+		console.log("row name", resident_name)
+		console.log("row email", resident_email)
+		console.log("row house", resident_house_number)
+		console.log("current row saving", currentRow._id)
 		Axios.put(`http://localhost:4000/resident/${currentRow._id}`, {
 			resident_name,
 			resident_email,
@@ -39,6 +41,7 @@ function TableComponent({ allResidents }) {
 			.then((res) => {
 				console.log("saved edit success: ", res)
 				setEdit(false)
+				refresh()
 			})
 			.catch((err) => {
 				console.log("error saving resident edit", err)
