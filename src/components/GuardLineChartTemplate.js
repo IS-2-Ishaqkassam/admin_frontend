@@ -11,6 +11,7 @@ import {
 } from "recharts"
 import styled from "styled-components"
 
+//data from LineChartComponent
 const GuardLineChartTemplate = ({ data }) => {
 	return (
 		<Parent>

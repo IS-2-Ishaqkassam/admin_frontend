@@ -67,9 +67,18 @@ function Chart() {
 			<div className="body">
 				<div className="left">
 					<Cards>
-						<div>{Math.round(residents.length)} Residents</div>
-						<div>{numberOfCars} Cars Scanned</div>
-						<div>{allVehicles.length} Resident Cars</div>
+						<div>
+							<p className="stat">{Math.round(residents.length)}</p>
+							<p>Residents</p>
+						</div>
+						<div>
+							<p className="stat">{numberOfCars}</p>
+							<p>Cars Scanned</p>
+						</div>
+						<div>
+							<p className="stat">{allVehicles.length}</p>
+							<p>Resident Cars</p>
+						</div>
 					</Cards>
 					<div className="table">
 						<LiveFeedTable />
@@ -131,10 +140,20 @@ const Cards = styled.div`
 
 	div {
 		height: 130px;
+		text-align: center;
+		align-items: center;
 		margin: 0 20px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 		width: 250px;
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
 			rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+		.stat {
+			font-size: 20px;
+			font-weight: bold;
+		}
 	}
 `
 const Charts = styled.div`

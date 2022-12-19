@@ -68,15 +68,21 @@ function WeeklyChart({ data, fromChild }) {
 		// console.log("data in tf saturdayhrs ", data)
 		console.log("prediction in tf saturdayhrs ", prediction)
 		group["hourOfDay"] = item.hourOfDay
-		if (group["average"] < 30) {
+		if (group["average"] < 10) {
 			group["traffic_density"] = "low"
+			group["Min Guards Required"] = 1
+		} else if (group["average"] < 20) {
+			group["traffic_density"] = "medium"
 			group["Min Guards Required"] = 2
-		} else if (group["average"] < 60) {
+		} else if (group["average"] < 30) {
 			group["traffic_density"] = "medium"
 			group["Min Guards Required"] = 3
-		} else if (group["average"] > 60) {
+		} else if (group["average"] < 35) {
 			group["traffic_density"] = "medium"
 			group["Min Guards Required"] = 5
+		} else if (group["average"] > 35) {
+			group["traffic_density"] = "medium"
+			group["Min Guards Required"] = 7
 		}
 		return groups
 	}, {})
@@ -219,7 +225,7 @@ function WeeklyChart({ data, fromChild }) {
 	return (
 		<Table className="table">
 			<div className="dropdown-container">
-				<button onClick={generateGuardSchedule}>Click</button>
+				<button onClick={generateGuardSchedule}>Generate Guard Schedule</button>
 				<FormControl className="dropdown" size="small">
 					<InputLabel id="demo-simple-select-label">Day</InputLabel>
 					<Select

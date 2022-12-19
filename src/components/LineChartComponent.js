@@ -7,6 +7,7 @@ import Select from "@mui/material/Select"
 import styled from "styled-components"
 import GuardLineChartTemplate from "./GuardLineChartTemplate"
 
+//data from chart.js
 const LineChartComponent = ({ data }) => {
 	const [day, setDay] = useState("")
 	const handleChange = (event) => {

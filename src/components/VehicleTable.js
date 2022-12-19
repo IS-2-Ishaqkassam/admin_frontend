@@ -25,6 +25,25 @@ function VehicleTableComponent({ allResidents, refresh }) {
 		console.log("editing cell: ", row)
 	}
 
+	const deleteHandler = (e, row) => {
+		e.preventDefault()
+		setCurrentRow(row)
+		console.log("current row deleting", row)
+		var confirm = window.confirm("Are you sure you want to delete?")
+		if (confirm == true) {
+			console.log("deleting row: ", row._id)
+			Axios.delete(`http://localhost:4000/vehicle/${row._id}`)
+				.then((res) => {
+					console.log("delete successful", res)
+					setEdit(false)
+				})
+				.catch((err) => {
+					console.log("err", err)
+				})
+		}
+		setEdit(false)
+	}
+
 	const saveEditHandler = (e) => {
 		e.preventDefault()
 		const vehicle_number_plate = vehicle_numberplate_ref.current.value
@@ -40,9 +59,8 @@ function VehicleTableComponent({ allResidents, refresh }) {
 		})
 			.then((res) => {
 				console.log("saved edit success: ", res)
-				setEdit( false )
+				setEdit(false)
 				refresh(true)
-				
 			})
 			.catch((err) => {
 				console.log("error saving resident edit", err)
@@ -135,7 +153,14 @@ function VehicleTableComponent({ allResidents, refresh }) {
 									>
 										Edit
 									</p>
-									<p id="delete">Delete</p>
+									<p
+										id="delete"
+										onClick={(e) => {
+											deleteHandler(e, currentRecords[index])
+										}}
+									>
+										Delete
+									</p>
 								</div>
 							</div>
 						))
@@ -244,7 +269,6 @@ const Table = styled.div`
 		border-top: 1px solid grey;
 		border-bottom: 1px solid grey;
 		height: 45px;
-
 	}
 
 	.table-rows {
